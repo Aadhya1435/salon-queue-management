@@ -37,6 +37,7 @@ export default function Join() {
   const [touched, setTouched] = useState({ name: false, phone: false })
   const [selected, setSelected] = useState<string[]>([])
   const [barberId, setBarberId] = useState<string | null>(null) // null = Any barber
+  const [barberName, setBarberName] = useState<string | null>(null) // remembered in case they go off duty
   const [limitHint, setLimitHint] = useState(false)
   const [submit, setSubmit] = useState<'idle' | 'loading' | 'done'>('idle')
   const [error, setError] = useState<string | null>(null)
@@ -54,6 +55,8 @@ export default function Join() {
   const chosen = selected.filter((id) => services.some((s) => s.id === id))
   const barber = barberId ? (barbers.find((b) => b.id === barberId) ?? null) : null
   const effectiveBarberId = barber?.id ?? null
+  // The stylist she picked went off duty while she was filling in the form: she'll join with Any stylist.
+  const goneBarber = barberId && !barber && live.status === 'ready' ? barberName : null
 
   const forecast = useMemo(() => forecastQueue(barbers, entries, now), [barbers, entries, now])
   const wait = newCustomerWait(forecast, effectiveBarberId)
@@ -64,7 +67,7 @@ export default function Join() {
     },
     { minutes: 0, price: 0 },
   )
-  const window_ = settings ? onlineJoinWindow(settings, barbers, salonMinutes(new Date(now))) : null
+  const window_ = settings ? onlineJoinWindow(settings, barbers, salonMinutes(new Date(now)), services.length) : null
   // This phone's spot (or the new one after a Re-add), if it is still active.
   const savedActive = saved ? (currentSpot(saved.id, entries) ?? null) : null
 
@@ -264,6 +267,7 @@ export default function Join() {
                   onClick={() => {
                     vibrate(vibration.tap)
                     setBarberId(id)
+                    setBarberName(b?.name ?? null)
                   }}
                   whileTap={{ scale: 0.96 }}
                   initial={rise.initial}
@@ -319,6 +323,11 @@ export default function Join() {
         <PillButton onClick={onConfirm} disabled={!canConfirm && submit === 'idle'} state={submit}>
           Confirm{chosen.length > 0 && <span className="num"> · {formatRupees(totals.price)}</span>}
         </PillButton>
+        {goneBarber && !failed && (
+          <p role="status" className="-mb-1 rounded-tile bg-warning-tint px-4 py-2.5 text-small font-semibold text-warning">
+            {goneBarber} isn't available any more, so you'll join with Any stylist.
+          </p>
+        )}
         {failed && <p className="-mt-1 text-center text-caption text-muted">Reconnect to join the queue</p>}
         {window_?.open && missing && submit === 'idle' && <p className="-mt-1 text-center text-caption text-muted">{missing} to continue</p>}
       </footer>

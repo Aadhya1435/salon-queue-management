@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import BlobCluster from '../components/BlobCluster'
 import PinGate from '../components/PinGate'
 import { useLiveQueue } from '../lib/liveQueue'
+import { JOIN_URL, JOIN_URL_SHORT } from '../lib/publicUrl'
 
 const STEPS = [
   { title: 'Scan', text: 'Point your phone camera at the code.' },
@@ -24,8 +25,9 @@ export default function Poster() {
 function PosterPage() {
   const { settings } = useLiveQueue()
   const salonName = settings?.salon_name ?? ' '
-  const joinUrl = `${location.origin}/join`
-  const shownUrl = joinUrl.replace(/^https?:\/\//, '')
+  // Always the public Join page, wherever this poster is opened or printed from.
+  const joinUrl = JOIN_URL
+  const shownUrl = JOIN_URL_SHORT
 
   useEffect(() => {
     document.title = settings ? `QR poster · ${settings.salon_name}` : 'QR poster'

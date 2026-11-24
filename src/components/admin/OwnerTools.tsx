@@ -45,6 +45,9 @@ export function PinSettings({ pin, locked = false }: { pin: string; locked?: boo
     setDone(null)
     if (!/^\d{4}$/.test(first)) return setError('A PIN is 4 digits.')
     if (first !== second) return setError("The two PINs don't match.")
+    // This device is signed in with the Owner PIN, so a matching Staff PIN can be caught here
+    // (the database checks both ways).
+    if (role === 'staff' && first === pin) return setError('The Staff PIN and the Owner PIN must be different.')
     setError(null)
     setConfirming(true)
   }

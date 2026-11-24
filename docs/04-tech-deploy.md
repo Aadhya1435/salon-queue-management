@@ -30,6 +30,7 @@ Use the latest stable version of each package at setup time.
 The base is one file: `supabase/migrations/20261124120000_salon_queue.sql`. It was tested in Postgres with 46 rule checks covering security, joining, Call next preferences, no-shows, breaks, duty, stats and the demo helpers. Later files in the same folder change it step by step:
 - `20261124160000_womens_salon_demo_fill.sql`: the demo queue uses the salon's own services and stylists.
 - `20261124180000_demo_hours_pin_lock.sql`: demo hours 10:00 AM – 9:00 PM, and PIN changes locked on the hosted demo.
+- `20261124190000_input_and_stylist_fixes.sql`: phone numbers with a leading 0, names need 2 letters (and skip titles on public screens), stylist addresses that survive a rename, Staff and Owner PINs must differ, and online joining needs at least one service On.
 
 **Public tables** (anyone can read, nobody can write directly)
 - `settings` (one row): salon name, open and close time, online queue open/closed, and `pin_change_locked` (true on the hosted demo)
@@ -57,7 +58,7 @@ The base is one file: `supabase/migrations/20261124120000_salon_queue.sql`. It w
   - **Demo helpers (owner PIN):**
     - `owner_demo_fill` adds 6 sample customers to an empty queue.
     - `owner_reset_today` clears today's queue and restarts tokens at S-1.
-- When a rule is broken, the function fails with a short code that the app turns into friendly text. The codes are `invalid_pin`, `invalid_phone`, `invalid_name`, `services_1_to_3`, `service_unavailable`, `barber_unavailable`, `online_closed`, `not_open_yet`, `no_barbers`, `salon_closed`, `barber_busy`, `barber_on_break`, `bad_transition`, `no_show_too_early`, `cannot_cancel`, `cannot_rate`, `cannot_readd`, `finish_current_first`, `barber_has_customers` and `pin_change_locked`.
+- When a rule is broken, the function fails with a short code that the app turns into friendly text. The codes are `invalid_pin`, `invalid_phone`, `invalid_name`, `services_1_to_3`, `service_unavailable`, `barber_unavailable`, `online_closed`, `not_open_yet`, `no_barbers`, `salon_closed`, `barber_busy`, `barber_on_break`, `bad_transition`, `no_show_too_early`, `cannot_cancel`, `cannot_rate`, `cannot_readd`, `finish_current_first`, `barber_has_customers`, `pin_change_locked`, `pin_in_use` and `no_services`.
 - PINs are stored hashed, never in the frontend code.
 
 **Where the rules live (one place each)**
@@ -89,7 +90,7 @@ salon-queue/
 │   ├── lib/             ← supabase client, API calls, realtime hooks, time helpers
 │   └── styles/          ← theme.css (colour, type, shape tokens) + motion.ts (durations, easings, springs)
 ├── vercel.json          ← SPA rewrites (no 404 on refresh)
-└── .env.example         ← VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY
+└── .env.example         ← VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, optional VITE_PUBLIC_URL (the address QR codes open)
 ```
 
 ## 4. Deployment (free)

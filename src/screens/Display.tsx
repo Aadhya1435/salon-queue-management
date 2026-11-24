@@ -7,6 +7,7 @@ import { goFullscreen, keepAwake, playChime, releaseWakeLock, unlockChime } from
 import LiveDot from '../components/LiveDot'
 import { formatClock, formatTimeOfDay, formatToken } from '../lib/format'
 import { useLiveQueue } from '../lib/liveQueue'
+import { JOIN_URL, JOIN_URL_SHORT } from '../lib/publicUrl'
 import { barberNow, forecastQueue, type BarberNow } from '../lib/queue/estimate'
 import { ONLINE_CLOSES_BEFORE_CLOSING, onlineJoinWindow, openStatus } from '../lib/queue/joinWindow'
 import { aroundClock, salonMinutes, timeToMinutes } from '../lib/time'
@@ -57,9 +58,10 @@ export default function Display() {
     return () => timers.forEach(clearTimeout)
   }, [flashes])
 
-  // Keep the screen awake: the lock drops whenever the tab is hidden.
+  // Keep the screen awake from the start (no tap needed where the browser allows it);
+  // the lock drops whenever the tab is hidden, so ask again when it's visible.
   useEffect(() => {
-    if (!started) return
+    void keepAwake()
     const onVisible = () => {
       if (document.visibilityState === 'visible') void keepAwake()
     }
@@ -68,7 +70,7 @@ export default function Display() {
       document.removeEventListener('visibilitychange', onVisible)
       releaseWakeLock()
     }
-  }, [started])
+  }, [])
 
   useEffect(() => {
     document.title = settings ? `${settings.salon_name} · Queue` : 'Roselle · Queue'
@@ -93,8 +95,9 @@ export default function Display() {
   }, [barbers, entries, minuteNow])
   const waitingCount = entries.filter((e) => e.status === 'waiting').length
 
-  const joinUrl = `${location.origin}/join`
-  const shortUrl = `${location.host}/join`
+  // Always the public Join page, whichever address the TV has open.
+  const joinUrl = JOIN_URL
+  const shortUrl = JOIN_URL_SHORT
   const salonName = settings?.salon_name ?? 'Roselle'
 
   return (
@@ -172,7 +175,7 @@ export default function Display() {
 
         {/* ── Footer line ── */}
         <footer className="col-span-2 flex items-center justify-between text-[2.6vh] text-tv-muted">
-          <span>{footerLine(settings, barbers, now)}</span>
+          <span>{footerLine(settings, barbers, live.services.length, now)}</span>
           <span className="flex items-center gap-[0.6vw] font-semibold">
             <img src="/favicon.svg" alt="" className="size-[2.6vh] rounded" /> Roselle
           </span>
@@ -198,22 +201,25 @@ export default function Display() {
         </AnimatePresence>
       </div>
 
-      {/* ── Start overlay ── */}
+      {/* ── Sound and full screen need one tap (a browser rule). The board stays visible meanwhile,
+            so a TV that reloads on its own keeps showing the queue. ── */}
       <AnimatePresence>
         {!started && (
           <motion.button
             type="button"
             onClick={start}
+            aria-label="Tap to turn on sound and full screen"
             exit={{ opacity: 0 }}
             transition={{ duration: duration.base }}
-            className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-[2vh] bg-tv-bg/85 text-tv-text backdrop-blur-sm"
+            className="absolute inset-0 z-50 flex items-end justify-center pb-[1.6vh]"
           >
-            <span className="rounded-full bg-tv-accent px-[3vw] py-[2.4vh] text-[5vh] font-extrabold text-tv-on-accent">Tap to start display</span>
-            <span className="text-[2.6vh] text-tv-muted">Turns on the chime, keeps the screen awake and goes full screen</span>
+            <span className="rounded-full bg-tv-accent px-[2vw] py-[0.9vh] text-[2.2vh] font-bold text-tv-on-accent shadow-pop">
+              Tap to turn on sound and full screen
+            </span>
           </motion.button>
         )}
       </AnimatePresence>
-      {!started && <BackButton to="/staff" label="Staff" tone="tv" className="absolute top-6 left-6 z-[60]" />}
+      {!started && <BackButton to="/staff" label="Staff" tone="tv" className="absolute bottom-[8vh] left-[2.5vw] z-[60]" />}
     </main>
   )
 }
@@ -304,12 +310,12 @@ function EmptyState({ settings, now, joinUrl, shortUrl }: { settings: Settings |
   )
 }
 
-function footerLine(settings: Settings | null, barbers: Barber[], now: number): string {
+function footerLine(settings: Settings | null, barbers: Barber[], activeServices: number, now: number): string {
   if (!settings) return ' '
   const minutes = salonMinutes(new Date(now))
   const status = openStatus(settings, minutes)
   if (!status.open) return status.label.replace('Closed · opens', "We're closed · Opens")
-  const window = onlineJoinWindow(settings, barbers, minutes)
+  const window = onlineJoinWindow(settings, barbers, minutes, activeServices)
   if (!window.open) return 'Walk-ins only right now'
   const lastJoin = timeToMinutes(settings.close_time) - ONLINE_CLOSES_BEFORE_CLOSING
   const hhmm = `${String(Math.floor(lastJoin / 60)).padStart(2, '0')}:${String(lastJoin % 60).padStart(2, '0')}`

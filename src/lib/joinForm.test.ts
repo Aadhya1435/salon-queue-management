@@ -7,6 +7,11 @@ describe('phone', () => {
     expect(phoneDigits('+91 98765-43210')).toBe('9876543210')
     expect(phoneDigits('98765432109999')).toBe('9876543210')
   })
+  it('drops a leading 0', () => {
+    expect(phoneDigits('09876543210')).toBe('9876543210')
+    expect(phoneDigits('098765 43210')).toBe('9876543210')
+    expect(phoneDigits('0')).toBe('')
+  })
   it('formats while typing', () => {
     expect(formatPhoneInput('98765')).toBe('98765')
     expect(formatPhoneInput('987654')).toBe('98765 4')
@@ -26,6 +31,19 @@ describe('name', () => {
     expect(nameError('K')).not.toBeNull()
     expect(nameError('Kunal')).toBeNull()
     expect(nameError('x'.repeat(31))).not.toBeNull()
+  })
+  it('needs 2 real letters; emoji and invisible characters do not count', () => {
+    expect(nameError('😀')).not.toBeNull()
+    expect(nameError('😀😀')).not.toBeNull()
+    expect(nameError('..')).not.toBeNull()
+    expect(nameError('\u200B\u200B\u200B')).not.toBeNull()
+    expect(cleanName('Pri\u200Bya')).toBe('Priya')
+    expect(nameError('नेहा')).toBeNull()
+    expect(nameError('Jo 😀')).toBeNull()
+  })
+  it('counts an emoji as one character, like the database', () => {
+    expect(nameError('Priya ' + '😀'.repeat(24))).toBeNull() // 30 characters
+    expect(nameError('Priya ' + '😀'.repeat(25))).not.toBeNull() // 31
   })
 })
 

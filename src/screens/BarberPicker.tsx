@@ -64,7 +64,7 @@ function Picker() {
             return (
               <motion.li key={b.id} {...rise} transition={{ ...transition.card, delay: i * stagger.list }}>
                 <Link
-                  to={`/stylist/${b.slug}`}
+                  to={`/stylist/${b.slug || b.id}`}
                   className="flex min-h-24 items-center gap-4 rounded-card bg-surface py-4 pr-4 pl-4 shadow-card transition-transform active:scale-[0.98]"
                 >
                   <BarberAvatar name={b.name} color={b.color} shape={b.shape} size={60} progress={state.kind === 'busy' ? state.progress : null} />

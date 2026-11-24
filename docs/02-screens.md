@@ -88,7 +88,7 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
 - **Offline banner** at the top: "Offline — reconnecting…".
 - **Toasts** at bottom centre, which disappear after 3 s.
 - **Skeletons** while loading. Never a blank screen.
-- **Confirm dialog:** a bottom sheet on phone, a centred dialog on tablet and desktop.
+- **Confirm dialog:** a bottom sheet on phone, a centred dialog on tablet and desktop. Keyboard focus moves into it, Tab stays inside it, and focus goes back to the button that opened it when it closes.
 - **Formats:** times like `2:25 PM`; money like `₹230` (no decimals); phones like `98765 43210`.
 - Every list has a friendly **empty state** (wording given per screen below).
 
@@ -153,7 +153,7 @@ These work on phones that support them and are never required.
   - 200-100-200 for "It's your turn"
 - **Chime:**
   - The TV plays it on every call.
-  - The phone plays it on "It's your turn", but only if the page has already been tapped once (a browser rule).
+  - The phone plays it on "It's your turn" once the customer has tapped **[Turn on sound]** on My Status. Browsers only allow sound after a tap, so the tap also unlocks it.
 
 ### Engaging touches
 - **Stylist signature shapes.** Each stylist owns a blob shape and a colour: Neha is an orchid star, Ayesha a mint clover, Simran a sky circle, and the next stylist a plum pill.
@@ -194,7 +194,8 @@ These work on phones that support them and are never required.
 
 **Phone layout**
 1. **Header:** ‹ back + "Join the queue".
-2. **Name** (2–30 chars) and **Phone** (a fixed `+91` prefix and the numeric keypad; formatted as you type; checked when you leave the field: "Enter a 10-digit mobile number").
+2. **Name** (2–30 characters, with at least 2 letters, so emoji-only or invisible names are refused) and **Phone** (a fixed `+91` prefix and the numeric keypad; formatted as you type; checked when you leave the field: "Enter a 10-digit mobile number").
+   - The phone field drops a leading 0 (`0 98765 43210` → `98765 43210`), and the cursor stays where you are typing, even in the middle of the number.
 3. **Services** with an orchid count badge and "up to 3".
    - A 2-column grid of white tiles, one per active service: a small blob icon, the name, and `45 min · ₹600`.
    - Selected tiles get a 2 px aubergine ring and a round check badge.
@@ -221,6 +222,8 @@ These work on phones that support them and are never required.
   - Then opens My Status. [See my spot ›] skips ahead.
   - If the phone already has a spot, a dialog says "You're already in the queue as S-14" with [View my spot].
   - If joining closed meanwhile, it shows "Online queue just closed. Walk-ins welcome until 9:00 PM."
+- **Stylist went off duty:** if the stylist you picked goes off duty while you fill in the form, a note above Confirm says "Neha isn't available any more, so you'll join with Any stylist."
+- **No services on:** if the owner has switched every service off, online joining is closed with "No services are available online right now."
 
 **Can't load (error state):** if the salon's data can't be loaded (offline, or the server is down), a card replaces the service tiles: "Can't reach the salon right now." with the reason and **[Try again]**. The stylist row is hidden, and the footer says "Reconnect to join the queue" under a disabled Confirm.
 
@@ -248,6 +251,7 @@ These work on phones that support them and are never required.
    - **Right:** the **wait ring**, an orchid circular countdown with "**15** min" in the centre. It counts down by itself and eases to new values.
 6. **Install hint card** (once, dismissible): "Add to Home Screen to check your place faster."
 7. **Cancel my spot**, a quiet link. It opens a confirmation, "Cancel your spot S-14? You'll lose your place.", with [Keep my spot] and [Cancel spot].
+8. **Sound card** (just under the "Your turn in…" line, above Cancel my spot): a bell, "Hear a chime when it's your turn" and **[Turn on sound]** (a short test chime plays). After the tap it says "Sound is on · keep this page open". The app can't alert a locked phone: that would need push notifications or SMS, which are out of scope.
 
 **Other states**
 | State | Screen |
@@ -298,7 +302,7 @@ These work on phones that support them and are never required.
 
 **Add walk-in (side sheet from the right)**
 - Name, phone, services, stylist: the same pickers and rules as Join, plus a live summary with the expected wait.
-- **[Add to queue]** shows a success panel: the big token "S-22", a **QR code of their status link** ("Scan to follow your place"), and [Done].
+- **[Add to queue]** shows a success panel: the big token "S-22", a **QR code of their status link** ("Scan to follow your place"), and [Done]. The link always uses the public address (see Screen 8).
 - A duplicate phone shows "Already in the queue as S-14."
 
 **Other actions**
@@ -335,7 +339,7 @@ These work on phones that support them and are never required.
 **Who / why:** customers in the salon see who's being served and who's next, from up to 5 m away.
 
 **Layout**
-1. **Start screen:** "Tap to start display" (unlocks sound, keeps the screen awake, goes full screen).
+1. **Starts by itself:** the board shows straight away, also after a reload, and keeps the screen awake where the browser allows it. A small pill at the bottom, "Tap to turn on sound and full screen", stays until someone taps anywhere on the screen (browsers need a tap for sound and full screen).
 2. **Left (≈ 65%):**
    - A header with the salon name and a clock.
    - One row per stylist on duty: avatar, name, then **NOW S-12** in the accent colour (at least 180 px tall).
@@ -385,16 +389,18 @@ These work on phones that support them and are never required.
 
 **Settings**
 - **Salon:** name, opening time, closing time. A note shows the auto rule: "Online joining closes 30 min before closing."
+  - If another device saves new settings while this form is open, the form updates by itself. If you were in the middle of an edit, a note says "Changed on another device" with [Use latest] instead.
 - **Stylists:**
   - Each row has an avatar/colour, name and an **On duty today** switch.
   - [+ Add stylist] (name + colour); tap a name to rename.
+  - Renaming keeps the stylist's page address (e.g. `/stylist/neha`), so a bookmarked stylist phone keeps working. Names in any script work: if a name has no Latin letters, the address uses a short code instead.
   - If the stylist still has customers waiting for them, switching them off asks to move those customers to "Any stylist" first (rules §6).
 - **Services:**
   - Each row shows name, minutes, ₹ price, an **On/Off** switch, and ↑ ↓ to reorder.
   - Tap a row to edit it; [+ Add service] adds one.
   - Turning a service off hides it from Join immediately.
 - **QR poster:** [Open printable poster] opens `/poster`.
-- **PINs:** change the Staff PIN or Owner PIN (4 digits, typed twice).
+- **PINs:** change the Staff PIN or Owner PIN (4 digits, typed twice). The two PINs must be different.
   - On the hosted demo this is locked (`settings.pin_change_locked`), because the test PINs are published in the README. The section then says "PIN changes are turned off on this demo, so the test PINs in the README always work." and its fields and button are disabled. The database refuses the change too.
 
 ---
@@ -403,7 +409,7 @@ These work on phones that support them and are never required.
 An A4 portrait page for the salon door or counter:
 - salon name
 - "Skip the wait — join the queue from your phone"
-- a large QR code pointing to `/join`
+- a large QR code that opens the **Join page** of the public site (`https://roselle-salon.vercel.app/join`), whichever address the poster was opened or printed from. The TV's QR code uses the same address. A different site can set `VITE_PUBLIC_URL`.
 - 3 short steps (Scan → Pick services → We'll call you)
 - the URL as text
 

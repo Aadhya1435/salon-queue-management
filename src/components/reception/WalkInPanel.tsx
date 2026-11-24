@@ -1,8 +1,9 @@
 import { Check, X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { QRCodeSVG } from 'qrcode.react'
-import { useEffect, useId, useState, type FormEvent } from 'react'
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { AnyAvatar, BarberAvatar } from '../BarberAvatar'
+import { useDialogFocus } from '../useDialogFocus'
 import { PhoneField, TextField } from '../Fields'
 import PillButton from '../PillButton'
 import { addWalkIn } from '../../lib/api'
@@ -11,6 +12,7 @@ import { formatRupees, formatToken } from '../../lib/format'
 import { cleanName, MAX_SERVICES, nameError, phoneError, toggleService } from '../../lib/joinForm'
 import { waitPhrase } from '../../lib/queue/display'
 import { newCustomerWait, type Forecast } from '../../lib/queue/estimate'
+import { statusUrl } from '../../lib/publicUrl'
 import { handleStaffError } from '../../lib/staff'
 import type { Barber, Service } from '../../lib/types'
 import { spring, transition, vibrate, vibration } from '../../styles/motion'
@@ -29,6 +31,8 @@ type Props = {
 /** "+ Add walk-in": a side sheet on tablet, full screen on phone (docs/02-screens.md → Screen 4). */
 export default function WalkInPanel({ open, onClose, ...rest }: Props) {
   const titleId = useId()
+  const panelRef = useRef<HTMLDivElement>(null)
+  useDialogFocus(panelRef, open)
 
   useEffect(() => {
     if (!open) return
@@ -55,10 +59,12 @@ export default function WalkInPanel({ open, onClose, ...rest }: Props) {
             transition={transition.fade}
           />
           <motion.div
+            ref={panelRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative flex h-dvh w-full flex-col bg-bg shadow-pop md:max-w-md md:rounded-l-sheet"
+            className="relative flex h-dvh outline-none w-full flex-col bg-bg shadow-pop md:max-w-md md:rounded-l-sheet"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -135,7 +141,7 @@ function WalkInForm({ pin, services, barbers, forecast, onAdded, onClose }: Omit
   }
 
   if (added) {
-    const url = `${location.origin}/status/${added.id}`
+    const url = statusUrl(added.id)
     return (
       <motion.div
         className="flex flex-1 flex-col items-center justify-center gap-5 overflow-y-auto px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center"

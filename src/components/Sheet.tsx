@@ -1,13 +1,16 @@
 import { X } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
-import { useEffect, useId, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { spring, transition } from '../styles/motion'
+import { useDialogFocus } from './useDialogFocus'
 
 type Props = { open: boolean; onClose: () => void; title: string; children: ReactNode }
 
 /** Bottom sheet on phones, centred card on wider screens. Escape or a backdrop tap closes it. */
 export default function Sheet({ open, onClose, title, children }: Props) {
   const titleId = useId()
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialogFocus(dialogRef, open)
 
   useEffect(() => {
     if (!open) return
@@ -34,10 +37,12 @@ export default function Sheet({ open, onClose, title, children }: Props) {
             transition={transition.fade}
           />
           <motion.div
+            ref={dialogRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative w-full max-w-lg rounded-t-sheet bg-surface px-6 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-pop sm:rounded-sheet"
+            className="relative w-full max-w-lg outline-none rounded-t-sheet bg-surface px-6 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-pop sm:rounded-sheet"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}

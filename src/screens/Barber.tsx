@@ -32,7 +32,8 @@ export default function Barber() {
 function BarberScreen() {
   const { name = '' } = useParams()
   const live = useLiveQueue()
-  const barber = live.barbers.find((b) => b.slug === name)
+  // The address is the stylist's slug (e.g. neha), or her id when the name has no Latin letters.
+  const barber = live.barbers.find((b) => (b.slug && b.slug === name) || b.id === name)
 
   useEffect(() => {
     document.title = barber ? `${barber.name} · Roselle` : 'Stylist · Roselle'

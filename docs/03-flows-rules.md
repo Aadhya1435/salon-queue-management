@@ -144,14 +144,16 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
 ---
 
 ## 5. Joining rules
-- **Name:** 2–30 characters. **Phone:** 10 digits starting with 6–9 (Indian mobile), shown as `98765 43210`.
+- **Name:** 2–30 characters with at least 2 letters (emoji-only and invisible names are refused). Public screens show the first name, skipping a title such as Dr., Mrs. or Ms. ("Dr. Priya Shah" → "Priya").
+- **Phone:** 10 digits starting with 6–9 (Indian mobile), shown as `98765 43210`. A leading `+91`, `91` or `0` is dropped.
 - **Services:** at least 1, at most 3. Only services the owner has switched On appear.
 - **Stylist:** "Any stylist" (the default) or one stylist on duty today. A stylist on break can still be chosen but shows "On break".
 - **One active spot per phone.** If this phone already has a Waiting, Called or In-chair spot today, no new spot is created. The app shows "You're already in the queue as S-14" with [View my spot]. The same check applies to walk-ins at reception.
-- **Online joining is open only when** the owner's switch is Open, AND the time is between opening and 30 min before closing, AND at least one stylist is on duty. Otherwise the Join button is disabled and shows the reason:
+- **Online joining is open only when** the owner's switch is Open, AND the time is between opening and 30 min before closing, AND at least one stylist is on duty, AND at least one service is On. Otherwise the Join button is disabled and shows the reason:
   - "Online queue is closed right now. Walk-ins welcome until 9:00 PM."
   - "We open at 10:00 AM."
   - "No stylists available right now."
+  - "No services are available online right now."
 - **Walk-ins** can be added any time before closing, even when online joining is closed.
 - **Tokens** are S-1, S-2 … and restart at S-1 every morning. Walk-ins use the same series. A token is never reused within a day.
 - **Today only.** Only today's customers (India time) appear anywhere.
@@ -178,9 +180,10 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
 - /reception, /stylist/…, and /admin ask for a **4-digit PIN** once per device.
   - The **Staff PIN** opens the reception and stylist screens.
   - The **Owner PIN** opens everything.
-  - **[Lock]** signs the device out.
+  - **[Lock]** signs the device out, in every open tab.
   - After 5 wrong PINs, the device must wait 30 s.
   - On the hosted demo, **changing a PIN is turned off** (`settings.pin_change_locked = true`), so the test PINs published in the README always work. The database refuses the change with `pin_change_locked`.
+  - The Staff PIN and the Owner PIN must be different (`pin_in_use`). Otherwise every staff login would open the owner screens.
 - Customers never log in. Their status page uses a private random link, not the token number.
 - Public screens (Home, TV, My Status) show **token + first name only**. Phone numbers appear only on staff screens.
 - The browser never edits the database directly. Every change goes through a server function that checks the rules (and the PIN for staff actions).
@@ -200,7 +203,8 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
   - A banner shows "Offline — reconnecting…".
   - Buttons that change data are disabled.
   - Everything reloads on reconnect.
-- **TV sound:** browsers block sound until someone taps the page, so the TV opens on a "Tap to start display" screen.
+- **TV sound:** browsers block sound until someone taps the page. The TV board shows straight away (also after a reload), with a small "Tap to turn on sound and full screen" pill until someone taps.
+- **Phone sound:** the same browser rule applies on My Status, so the customer taps [Turn on sound] once. The chime then plays on "It's your turn" while the page is open.
 
 ---
 

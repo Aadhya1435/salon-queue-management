@@ -55,6 +55,15 @@ export function handleStaffError(error: unknown) {
   if (errorCode(error) === 'invalid_pin') lockStaff()
 }
 
+// [Lock] or a sign-in in another tab of this browser applies here too.
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (e) => {
+    if (e.key !== KEY && e.key !== null) return // null = storage was cleared
+    session = read()
+    listeners.forEach((l) => l())
+  })
+}
+
 export function useStaffSession(): StaffSession | null {
   return useSyncExternalStore(
     (l) => {

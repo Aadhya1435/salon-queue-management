@@ -37,7 +37,7 @@ export default function Home() {
   const newWait = newCustomerWait(forecast, null)
   const nowMinutes = salonMinutes(new Date(now))
   const status = settings ? openStatus(settings, nowMinutes) : null
-  const joinWindow = settings ? onlineJoinWindow(settings, barbers, nowMinutes) : null
+  const joinWindow = settings ? onlineJoinWindow(settings, barbers, nowMinutes, live.services.length) : null
 
   // The saved spot, or the new one if reception re-added it after a no-show.
   const mySpot = saved ? currentSpot(saved.id, entries) : undefined

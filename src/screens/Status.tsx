@@ -10,6 +10,7 @@ import Sheet from '../components/Sheet'
 import CalledTakeover from '../components/status/CalledTakeover'
 import JourneyTracker from '../components/status/JourneyTracker'
 import RateVisit from '../components/status/RateVisit'
+import SoundCard from '../components/status/SoundCard'
 import StatusBanner from '../components/status/StatusBanner'
 import WaitRing from '../components/status/WaitRing'
 import { cancelMySpot } from '../lib/api'
@@ -328,7 +329,10 @@ function Waiting({ entry, barber, tokenCardRef }: { entry: QueueEntry; barber: B
           <motion.p {...appear(3)} className="text-center text-small text-muted lg:text-left" aria-live="polite">
             {turnLine}
           </motion.p>
-          <motion.div {...appear(4)} className="flex justify-center lg:justify-start">
+          <motion.div {...appear(4)} className="mt-2">
+            <SoundCard />
+          </motion.div>
+          <motion.div {...appear(5)} className="flex justify-center lg:justify-start">
             <button type="button" onClick={() => setCancelOpen(true)} className="min-h-11 px-3 text-small font-semibold text-muted underline underline-offset-2 hover:text-text lg:px-0">
               Cancel my spot
             </button>

@@ -32,6 +32,8 @@ const MESSAGES: Record<string, string> = {
   barber_name_taken: 'A stylist with that name already exists.',
   invalid_new_pin: 'A PIN is 4 digits.',
   pin_change_locked: 'PIN changes are turned off on this demo.',
+  pin_in_use: 'The Staff PIN and the Owner PIN must be different.',
+  no_services: 'No services are available online right now.',
   queue_not_empty: 'Clear today’s queue before filling it with demo customers.',
 }
 

@@ -127,7 +127,7 @@ function Dashboard() {
 
   // Top bar: the online-queue pill.
   const nowMinutes = salonMinutes(new Date(now))
-  const onlineOpen = settings ? onlineJoinWindow(settings, barbers, nowMinutes).open : false
+  const onlineOpen = settings ? onlineJoinWindow(settings, barbers, nowMinutes, services.length).open : false
   const onlineUntil = settings ? minutesToClock(timeToMinutes(settings.close_time) - ONLINE_CLOSES_BEFORE_CLOSING) : ''
 
   const ready = rows !== null && live.status !== 'loading'
