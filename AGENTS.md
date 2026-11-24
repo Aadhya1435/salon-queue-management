@@ -11,7 +11,7 @@ Mobile-first PWA for a salon queue. Customers join from their phone, see their p
 
 ## Stack
 React + TypeScript + Vite + Tailwind CSS v4 + vite-plugin-pwa. Data and live sync come from Supabase (Postgres + Realtime + database functions). Hosting is Vercel (frontend) + Supabase free tier; there is no other backend.
-- `npm install` · `npm run dev` · `npm test` · `npm run build`
+- `npm install` · `npm run dev` · `npm test` · `npm run lint` · `npm run build`
 - Env: copy `.env.example` to `.env.local` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`)
 - `README.md` must start with the title, then `**Live demo:** <url>`, then the test PINs.
 

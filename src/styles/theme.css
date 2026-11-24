@@ -1,0 +1,101 @@
+/*
+ * Plum & Orchid design tokens: docs/02-screens.md → Design system.
+ * Components use ONLY these (e.g. bg-surface, text-muted, rounded-card, shadow-card).
+ * Tailwind's default colour palette is switched off so raw colours can't sneak in.
+ */
+@theme {
+  /* ── Type ── */
+  --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  --text-caption: 12px;
+  --text-caption--line-height: 1.35;
+  --text-small: 14px;
+  --text-small--line-height: 1.4;
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-title: 20px;
+  --text-title--line-height: 1.3;
+  --text-heading: 28px;
+  --text-heading--line-height: 1.15;
+  --text-big: 40px;
+  --text-big--line-height: 1;
+  --text-token: 64px;
+  --text-token--line-height: 1;
+
+  /* ── Colour (app) ── */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+
+  --color-bg: #f3eff4;            /* lilac mist */
+  --color-surface: #ffffff;       /* cards, sheets, inputs */
+  --color-surface-2: #ece5ee;     /* chips, ring tracks, secondary buttons */
+  --color-border: #e3dae6;
+  --color-text: #2a1f2f;
+  --color-muted: #6b5f71;         /* 5.3:1 on bg */
+  --color-primary: #3f2c46;       /* aubergine: pill buttons, selections */
+  --color-on-primary: #ffffff;
+  --color-hero: #4a374f;          /* hero panels, gradient feature cards */
+  --color-hero-2: #6e5276;
+  --color-accent: #c2439f;        /* orchid: badges, token pill, stars */
+  --color-on-accent: #ffffff;
+  --color-accent-tint: #f7e4f2;
+  --color-success: #1b6e4f;       /* Free, Done */
+  --color-success-tint: #dcf2e7;
+  --color-warning: #a04a08;       /* waits over 60 min: orange, never pink */
+  --color-warning-tint: #fdebd8;
+  --color-danger: #b3261e;
+  --color-break: #8b8291;         /* On break */
+
+  /* Blob shapes (decoration only) */
+  --color-blob-orchid: #e7a4ee;
+  --color-blob-orchid-2: #b65cc4;
+  --color-blob-plum: #8c5e92;
+  --color-blob-mint: #55ac8d;
+  --color-blob-sky: #6189cf;
+
+  /* Barber signature colours */
+  --color-barber-1: #a64db5;      /* Ravi: star */
+  --color-barber-2: #2f8a6b;      /* Amit: clover */
+  --color-barber-3: #4a72bc;      /* Imran: circle */
+  --color-barber-4: #8c5e92;      /* next: pill */
+
+  /* ── Colour (TV board, always dark) ── */
+  --color-tv-bg: #2b2030;
+  --color-tv-surface: #3a2c40;
+  --color-tv-line: #4a3a51;
+  --color-tv-text: #f7f1f8;
+  --color-tv-muted: #b9aebf;
+  --color-tv-accent: #e08fe6;
+  --color-tv-on-accent: #2b2030;
+
+  /* ── Shape and depth ── */
+  --radius-card: 28px;
+  --radius-sheet: 32px;
+  --radius-input: 18px;
+  --radius-tile: 18px;
+  --shadow-card: 0 10px 30px -14px rgb(63 44 70 / 0.22);
+  --shadow-pop: 0 18px 40px -18px rgb(63 44 70 / 0.45);
+
+  /* ── Loops (everything else animates with Motion; see src/styles/motion.ts) ── */
+  --animate-drift: drift 6s ease-in-out infinite;
+  --animate-breathe: breathe 1.8s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes drift {
+    50% { transform: translateY(-3px) rotate(5deg); }
+  }
+  @keyframes breathe {
+    50% { transform: scale(1.5); opacity: 0.55; }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(1.45); opacity: 0; }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+}
