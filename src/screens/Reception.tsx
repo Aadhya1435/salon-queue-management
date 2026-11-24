@@ -136,7 +136,7 @@ function Dashboard() {
     <main className="mx-auto flex min-h-dvh w-full max-w-7xl flex-col gap-5 px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] md:px-6">
       {/* ── Top bar ── */}
       <header className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-card bg-linear-to-br from-hero to-hero-2 px-4 py-3 text-white shadow-card md:px-5">
-        <div className="flex min-w-0 flex-1 items-center gap-3">
+        <div className="flex min-w-0 basis-full items-center gap-3 sm:basis-0 sm:flex-1">
           <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-body font-extrabold text-primary">
             {(settings?.salon_name ?? 'W').charAt(0)}
           </span>
@@ -144,7 +144,7 @@ function Dashboard() {
             <h1 className="truncate text-body font-bold">{settings?.salon_name ?? 'Roselle'} · Reception</h1>
             <p className="flex items-center gap-3">
               <LiveDot live={live.live} onDark />
-              <span className="num text-caption font-semibold text-white/80">{formatClock(new Date(now))}</span>
+              <span className="num text-caption font-semibold whitespace-nowrap text-white/80">{formatClock(new Date(now))}</span>
             </p>
           </div>
         </div>

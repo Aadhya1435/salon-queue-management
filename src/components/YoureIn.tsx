@@ -15,6 +15,7 @@ type Props = {
 }
 
 const AUTO_CONTINUE_MS = 6500
+const ARM_AFTER_MS = 1200
 
 /**
  * Motion moment 7: the check pops and draws itself, blob confetti bursts, and
@@ -25,6 +26,7 @@ export default function YoureIn({ token, place, wait, onContinue }: Props) {
   const hostRef = useRef<HTMLDivElement>(null)
   const checkRef = useRef<HTMLDivElement>(null)
   const [shown, setShown] = useState(reduce ? token : Math.max(1, token - 9))
+  const [armed, setArmed] = useState(false)
 
   // Ticket-counter roll.
   useEffect(() => {
@@ -60,9 +62,12 @@ export default function YoureIn({ token, place, wait, onContinue }: Props) {
       vibrate(20)
     }, 420)
     const next = setTimeout(onContinue, AUTO_CONTINUE_MS)
+    // A second tap on Confirm lands where "See my spot" appears: ignore taps until it's visible.
+    const arm = setTimeout(() => setArmed(true), ARM_AFTER_MS)
     return () => {
       clearTimeout(pop)
       clearTimeout(next)
+      clearTimeout(arm)
     }
   }, [onContinue])
 
@@ -114,8 +119,8 @@ export default function YoureIn({ token, place, wait, onContinue }: Props) {
           {place !== null && wait !== null ? `${ordinal(place)} in line · ${waitPhrase(wait, place)}` : 'Saving your spot…'}
         </motion.p>
       </div>
-      <motion.div {...appear(0.8)} className="mx-auto w-full max-w-sm">
-        <PillButton variant="white" onClick={onContinue}>
+      <motion.div {...appear(0.8)} className={`mx-auto w-full max-w-sm ${armed ? '' : 'pointer-events-none'}`}>
+        <PillButton variant="white" onClick={() => armed && onContinue()}>
           See my spot
         </PillButton>
       </motion.div>

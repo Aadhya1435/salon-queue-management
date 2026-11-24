@@ -209,7 +209,7 @@ function Waiting({ entry, barber, tokenCardRef }: { entry: QueueEntry; barber: B
     const before = lastPlace.current
     lastPlace.current = place
     if (before === null || before === place) return
-    if (place === 2 && before > 2) vibrate(vibration.startComing)
+    if (place === 2 && before > 2 && (navigator.userActivation?.hasBeenActive ?? true)) vibrate(vibration.startComing)
     setShine((n) => n + 1)
   }, [place])
 
@@ -243,7 +243,7 @@ function Waiting({ entry, barber, tokenCardRef }: { entry: QueueEntry; barber: B
 
   return (
     <Shell live={live.live} wide>
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-8">
         {/* Tracker + banner: top on phones, right column on desktop. */}
         <div className="flex flex-col gap-4 lg:col-start-2 lg:row-start-1">
           <motion.div {...appear(0)}>

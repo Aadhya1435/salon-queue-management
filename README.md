@@ -1,6 +1,6 @@
 # Roselle — Salon Queue Management System
 
-**Live demo:** _link added after the first successful Vercel deploy_
+**Live demo:** https://roselle-salon.vercel.app
 **Hosted on:** Vercel (frontend) + Supabase (database & realtime)
 **Test PINs:** Staff `1234` (reception & barber screens) · Owner `9999` (owner settings)
 
