@@ -50,6 +50,7 @@ Database setup: run the files in [supabase/migrations/](supabase/migrations/) in
 - [Screens & features](docs/02-screens.md)
 - [Flows & rules](docs/03-flows-rules.md)
 - [Tech & deployment](docs/04-tech-deploy.md)
+- Demo video: [English](demo/roselle-demo-english.mp4) · [Hindi](demo/roselle-demo-hindi.mp4)
 - [Prompts log](prompts.md): every prompt, in order
 - [Reflection](REFLECTION.md): one thing the agent got wrong, and how I fixed my prompt and docs
 - [Agent rules](AGENTS.md)

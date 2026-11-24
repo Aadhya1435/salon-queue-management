@@ -10,3 +10,6 @@ coverage/
 playwright-report/
 test-results/
 *.log
+
+# Demo-video working files. The finished English and Hindi videos are in demo/.
+brag-output/
