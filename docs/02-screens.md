@@ -342,6 +342,8 @@ These work on phones that support them and are never required.
 ## Screen 6: Waiting-Area TV (`/display`): 1920×1080, public
 **Who / why:** customers in the salon see who's being served and who's next, from up to 5 m away.
 
+**Opened on a phone or other small screen** (narrower than 1024 px, or taller than it is wide): a note covers the board first. It says "This is the waiting-area TV screen", explains that it's made for a large landscape display (a TV or laptop) so a phone shows only part of it, and suggests opening it on a laptop or TV. It has **[Show it anyway]** and **[Back to staff screens]**.
+
 **Layout**
 1. **Starts by itself:** the board shows straight away, also after a reload, and keeps the screen awake where the browser allows it. A small pill at the bottom, "Tap to turn on sound and full screen", stays until someone taps anywhere on the screen (browsers need a tap for sound and full screen).
 2. **Left (≈ 65%):**

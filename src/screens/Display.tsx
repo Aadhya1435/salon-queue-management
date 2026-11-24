@@ -15,6 +15,7 @@ import type { Barber, Settings } from '../lib/types'
 import { useNow } from '../lib/useNow'
 import { duration, ease, spring } from '../styles/motion'
 import BackButton from '../components/BackButton'
+import SmallScreenNote from '../components/display/SmallScreenNote'
 
 /** How long a call stays on screen: the row floods and glows, the banner shows (Motion moment 19). */
 const CALL_MS = 4000
@@ -227,6 +228,7 @@ export default function Display() {
           </motion.button>
         )}
       </AnimatePresence>
+      <SmallScreenNote />
       {!started && <BackButton to="/staff" label="Staff" tone="tv" className="absolute bottom-[8vh] left-[2.5vw] z-[60]" />}
     </main>
   )

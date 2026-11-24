@@ -25,7 +25,7 @@ Every screen stays in sync within seconds.
 | `/status/:id` | My Status | Customer (private link) |
 | `/reception` | Reception Dashboard | Staff PIN · tablet |
 | `/stylist`, `/stylist/:name` | Stylist View | Staff PIN · phone |
-| `/display` | Waiting-Area TV | Public · TV |
+| `/display` | Waiting-Area TV (open it on a laptop or TV in landscape; a phone shows only part of it) | Public · TV |
 | `/admin` | Owner Settings & Stats | Owner PIN |
 | `/poster` | QR Poster | Owner PIN |
 | `/staff` | Staff hub | Staff |
