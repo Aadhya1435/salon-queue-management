@@ -18,6 +18,7 @@ import { handleStaffError, lockStaff, useStaffSession } from '../lib/staff'
 import type { Barber as BarberRow, StaffQueueEntry } from '../lib/types'
 import { useNow } from '../lib/useNow'
 import { duration, ease, spring, transition } from '../styles/motion'
+import BackButton from '../components/BackButton'
 
 /** Screen 5: Barber View (docs/02-screens.md). The :name param is the barber's slug. */
 export default function Barber() {
@@ -154,6 +155,7 @@ function BarberView({ barber }: { barber: BarberRow }) {
       >
         {/* ── Top bar ── */}
         <header className="flex items-center gap-3 px-5 pt-[max(1rem,env(safe-area-inset-top))]">
+          <BackButton to="/stylist" ariaLabel="Back to stylists" />
           <BarberAvatar name={barber.name} color={barber.color} shape={barber.shape} size={46} progress={state.kind === 'busy' ? state.progress : null} />
           <div className="min-w-0 flex-1">
             <h1 className="truncate text-title font-extrabold tracking-tight">{barber.name}</h1>

@@ -1,7 +1,6 @@
-import { ChevronLeft, Lock } from 'lucide-react'
+import { Lock } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router'
 import { DemoTools, PinSettings, PosterLink } from '../components/admin/OwnerTools'
 import BarbersSettings from '../components/admin/BarbersSettings'
 import QueueSwitchCard from '../components/admin/QueueSwitchCard'
@@ -15,6 +14,7 @@ import PinGate from '../components/PinGate'
 import { useLiveQueue } from '../lib/liveQueue'
 import { lockStaff, useStaffSession } from '../lib/staff'
 import { rise, transition } from '../styles/motion'
+import BackButton from '../components/BackButton'
 
 type Tab = 'today' | 'settings'
 
@@ -45,9 +45,7 @@ function OwnerScreen() {
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col gap-4 px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8 lg:pt-6">
       <header className="flex items-center gap-2">
-        <Link to="/staff" aria-label="Back to staff screens" className="-ml-2 grid size-11 place-items-center rounded-full text-muted hover:bg-surface-2">
-          <ChevronLeft size={22} />
-        </Link>
+        <BackButton to="/staff" label="Staff" />
         <div className="min-w-0 flex-1">
           <h1 className="truncate text-title font-bold">Owner</h1>
           <p className="flex items-center gap-2 truncate text-caption text-muted">

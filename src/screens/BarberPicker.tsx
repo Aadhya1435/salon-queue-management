@@ -10,6 +10,7 @@ import { lockStaff } from '../lib/staff'
 import { useNow } from '../lib/useNow'
 import { rise, stagger, transition } from '../styles/motion'
 import { StatusChip } from '../components/barber/StatusChip'
+import BackButton from '../components/BackButton'
 
 /** Screen 5: `/barber` picks which barber this phone is for (docs/02-screens.md). */
 export default function BarberPicker() {
@@ -32,9 +33,7 @@ function Picker() {
   return (
     <main className="mx-auto flex min-h-dvh max-w-xl flex-col px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pb-8">
       <header className="flex items-center justify-between gap-3">
-        <Link to="/staff" className="flex min-h-11 items-center text-small font-semibold text-muted">
-          ‹ Staff
-        </Link>
+        <BackButton to="/staff" label="Staff" />
         <button
           type="button"
           onClick={lockStaff}

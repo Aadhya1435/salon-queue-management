@@ -21,6 +21,7 @@ import { salonMinutes, timeToMinutes } from '../lib/time'
 import type { Barber, StaffQueueEntry } from '../lib/types'
 import { useNow } from '../lib/useNow'
 import { spring } from '../styles/motion'
+import BackButton from '../components/BackButton'
 
 /** Screen 4: Reception Dashboard (docs/02-screens.md). */
 export default function Reception() {
@@ -137,6 +138,7 @@ function Dashboard() {
       {/* ── Top bar ── */}
       <header className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-card bg-linear-to-br from-hero to-hero-2 px-4 py-3 text-white shadow-card md:px-5">
         <div className="flex min-w-0 basis-full items-center gap-3 sm:basis-0 sm:flex-1">
+          <BackButton to="/staff" label="Staff" tone="dark" />
           <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-body font-extrabold text-primary">
             {(settings?.salon_name ?? 'W').charAt(0)}
           </span>

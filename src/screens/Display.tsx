@@ -13,6 +13,7 @@ import { aroundClock, salonMinutes, timeToMinutes } from '../lib/time'
 import type { Barber, Settings } from '../lib/types'
 import { useNow } from '../lib/useNow'
 import { duration, ease, spring } from '../styles/motion'
+import BackButton from '../components/BackButton'
 
 /** How long a call stays on screen: the row floods and glows, the banner shows (Motion moment 19). */
 const CALL_MS = 4000
@@ -212,6 +213,7 @@ export default function Display() {
           </motion.button>
         )}
       </AnimatePresence>
+      {!started && <BackButton to="/staff" label="Staff" tone="tv" className="absolute top-6 left-6 z-[60]" />}
     </main>
   )
 }

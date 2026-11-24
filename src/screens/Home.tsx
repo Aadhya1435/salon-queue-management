@@ -1,3 +1,4 @@
+import { ChevronRight, KeyRound } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
@@ -148,11 +149,22 @@ export default function Home() {
           </button>
         </section>
 
-        <footer className="mt-auto flex items-center justify-between px-5 pt-8 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-caption text-muted lg:px-0">
-          <Link to="/staff" className="flex min-h-11 items-center font-semibold hover:text-text">
-            Staff
+        <footer className="mt-auto flex flex-col items-center gap-4 px-5 pt-8 pb-[max(1.25rem,env(safe-area-inset-bottom))] lg:px-0">
+          {/* Staff login: easy to find for staff (and for testing). */}
+          <Link
+            to="/staff"
+            className="flex w-full max-w-sm items-center gap-3 rounded-full bg-surface py-2 pr-4 pl-2 shadow-card ring-1 ring-border transition-transform hover:ring-primary active:scale-[0.97]"
+          >
+            <span aria-hidden="true" className="grid size-11 shrink-0 place-items-center rounded-full bg-primary text-on-primary">
+              <KeyRound size={20} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-body font-bold">Staff login</span>
+              <span className="block truncate text-caption text-muted">Reception · Stylists · Owner</span>
+            </span>
+            <ChevronRight size={20} aria-hidden="true" className="shrink-0 text-muted" />
           </Link>
-          <span className="flex items-center gap-1.5 font-semibold">
+          <span className="flex items-center gap-1.5 text-caption font-semibold text-muted">
             <img src="/favicon.svg" alt="" className="size-4 rounded" /> Roselle
           </span>
         </footer>
