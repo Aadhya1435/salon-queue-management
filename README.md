@@ -43,12 +43,13 @@ npm test                     # unit tests
 npm run build                # production build (also builds the service worker)
 ```
 
-Database setup: paste [supabase/migrations/20261124120000_salon_queue.sql](supabase/migrations/20261124120000_salon_queue.sql) into Supabase → SQL Editor → Run, once.
+Database setup: run the files in [supabase/migrations/](supabase/migrations/) in order (Supabase → SQL Editor → Run), starting with `20261124120000_salon_queue.sql`.
 
 ## Docs
 - [Brief & scope](docs/01-brief.md)
 - [Screens & features](docs/02-screens.md)
 - [Flows & rules](docs/03-flows-rules.md)
 - [Tech & deployment](docs/04-tech-deploy.md)
-- [Prompts log](prompts.md)
+- [Prompts log](prompts.md): every prompt, in order
+- [Reflection](REFLECTION.md): one thing the agent got wrong, and how I fixed my prompt and docs
 - [Agent rules](AGENTS.md)
