@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarX2, CircleSlash, UserX } from 'lucide-react'
+import { ArrowLeft, CalendarX2, CircleSlash, RotateCcw, UserX } from 'lucide-react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Link, useParams } from 'react-router'
@@ -16,7 +16,7 @@ import { cancelMySpot } from '../lib/api'
 import { friendlyError } from '../lib/errors'
 import { formatClock, formatToken, ordinal } from '../lib/format'
 import { refreshQueue, useLiveQueue } from '../lib/liveQueue'
-import { clearMySpot, saveMySpot } from '../lib/mySpot'
+import { clearMySpot, currentSpot, saveMySpot } from '../lib/mySpot'
 import { waitPhrase } from '../lib/queue/display'
 import { forecastQueue } from '../lib/queue/estimate'
 import { supabase } from '../lib/supabase'
@@ -85,12 +85,16 @@ export default function Status() {
 
   const barber = liveBarber ?? (extraBarber?.id === barberId ? extraBarber : null)
 
-  // Remember an active spot on this phone; forget a cancelled one.
+  // A no-show that reception re-added has a new spot (new id, new token) at the end of the queue.
+  const readdedAs = entry?.status === 'no_show' ? currentSpot(entry.id, live.entries) : undefined
+
+  // Remember an active spot on this phone (or the re-added one); forget a cancelled one.
   useEffect(() => {
-    if (!entry) return
-    if (ACTIVE.has(entry.status)) saveMySpot(entry.id, entry.token)
+    if (readdedAs) saveMySpot(readdedAs.id, readdedAs.token)
+    else if (!entry) return
+    else if (ACTIVE.has(entry.status)) saveMySpot(entry.id, entry.token)
     else if (entry.status === 'cancelled') clearMySpot()
-  }, [entry])
+  }, [entry, readdedAs])
 
   const salonName = live.settings?.salon_name ?? 'the salon'
   useEffect(() => {
@@ -172,6 +176,18 @@ export default function Status() {
         </Shell>
       )
     case 'no_show':
+      if (readdedAs)
+        return (
+          <Shell live={live.live}>
+            <EndCard
+              icon={<RotateCcw size={28} />}
+              title="You're back in the queue"
+              body={`You're now ${formatToken(readdedAs.token)}, at the end of the queue.`}
+            >
+              <PillButton to={`/status/${readdedAs.id}`}>See my new spot</PillButton>
+            </EndCard>
+          </Shell>
+        )
       return (
         <Shell live={live.live}>
           <EndCard icon={<UserX size={28} />} title="You missed your turn" body="Please speak to reception.">

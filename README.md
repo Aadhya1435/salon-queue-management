@@ -1,13 +1,14 @@
 # Roselle — Salon Queue Management System
 
 **Live demo:** https://roselle-salon.vercel.app
-**Hosted on:** Vercel (frontend) + Supabase (database & realtime)
 **Test PINs:** Staff `1234` (reception & stylist screens) · Owner `9999` (owner settings, opens everything)
+**Hosted on:** Vercel (frontend) + Supabase (database & realtime)
+**Demo hours:** 10:00 AM – 9:00 PM India time (IST). Online joining is open until 8:30 PM; reception can add walk-ins until 9:00 PM.
 
 ## About
 A mobile-first web app (installable PWA) for a salon queue:
 - Customers join from their phone, watch their place and wait count down, and get called.
-- Reception and barbers run the queue from a tablet and their phones.
+- Reception and stylists run the queue from a tablet and their phones.
 - A TV in the waiting area shows who's next.
 - The owner sees today's stats.
 
@@ -20,7 +21,7 @@ Every screen stays in sync within seconds.
 | `/join` | Join Queue | Customer |
 | `/status/:id` | My Status | Customer (private link) |
 | `/reception` | Reception Dashboard | Staff PIN · tablet |
-| `/barber`, `/barber/:name` | Barber View | Staff PIN · phone |
+| `/stylist`, `/stylist/:name` | Stylist View | Staff PIN · phone |
 | `/display` | Waiting-Area TV | Public · TV |
 | `/admin` | Owner Settings & Stats | Owner PIN |
 | `/poster` | QR Poster | Owner PIN |

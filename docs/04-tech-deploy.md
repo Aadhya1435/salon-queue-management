@@ -14,7 +14,7 @@ Everything here is **free** and needs no credit card.
 | QR codes | `qrcode.react` | TV "Scan to join", the printable poster, and walk-in status links. |
 | Charts | `recharts` | The owner's 3 small charts. |
 | Icons | `lucide-react` | Thin, consistent icon set. |
-| Animation | **Motion** (`motion`, Motion for React) + the browser's View Transitions API | Springs, shared-layout moves (the Call-next row flying into the barber card), enter/exit and number rolls. It respects reduced motion. Blob confetti is built with it, so no extra library is needed. |
+| Animation | **Motion** (`motion`, Motion for React) + the browser's View Transitions API | Springs, shared-layout moves (the Call-next row flying into the stylist card), enter/exit and number rolls. It respects reduced motion. Blob confetti is built with it, so no extra library is needed. |
 | Tests | **Vitest** for the queue rules, **Playwright** for the checklist across phone, tablet and TV windows | The guide asks the agent to verify against the checklist. |
 
 Use the latest stable version of each package at setup time.
@@ -27,15 +27,17 @@ Use the latest stable version of each package at setup time.
 
 ## 2. How the data works
 
-All of this is in one file: `supabase/migrations/20261124120000_salon_queue.sql`. It was tested in Postgres with 46 rule checks covering security, joining, Call next preferences, no-shows, breaks, duty, stats and the demo helpers.
+The base is one file: `supabase/migrations/20261124120000_salon_queue.sql`. It was tested in Postgres with 46 rule checks covering security, joining, Call next preferences, no-shows, breaks, duty, stats and the demo helpers. Later files in the same folder change it step by step:
+- `20261124160000_womens_salon_demo_fill.sql`: the demo queue uses the salon's own services and stylists.
+- `20261124180000_demo_hours_pin_lock.sql`: demo hours 10:00 AM – 9:00 PM, and PIN changes locked on the hosted demo.
 
 **Public tables** (anyone can read, nobody can write directly)
-- `settings` (one row): salon name, open and close time, online queue open/closed
-- `barbers`: name, slug (for `/barber/ravi`), colour, signature shape, on duty, on break, sort order
+- `settings` (one row): salon name, open and close time, online queue open/closed, and `pin_change_locked` (true on the hosted demo)
+- `barbers`: name, slug (for `/stylist/neha`), colour, signature shape, on duty, on break, sort order
 - `services`: name, minutes, price, active, sort order
 - `queue_entries`:
   - random id, day, token number, **first name only**
-  - chosen barber (or Any) and assigned barber
+  - chosen stylist (or Any) and assigned stylist
   - services (copied at join time), total minutes and price
   - status and source (online/walk-in)
   - the times it was joined, called, started, finished and cancelled
@@ -47,7 +49,7 @@ All of this is in one file: `supabase/migrations/20261124120000_salon_queue.sql`
 - `token_counters`: the S-1, S-2 … counter for each day
 
 **Security**
-- The browser uses Supabase's public **publishable key** (called the anon key in older projects). Row-level security lets the public **read only** non-private data: settings without PINs, barbers, services, and queue entries without phones.
+- The browser uses Supabase's public **publishable key** (called the anon key in older projects). Row-level security lets the public **read only** non-private data: settings without PINs, stylists, services, and queue entries without phones.
 - **No table is written directly from the browser.** Every change goes through a database function:
   - **Public:** `join_queue`, `find_my_spot`, `cancel_my_spot`, `rate_visit`
   - **Staff (need the PIN):** `staff_login`, `staff_queue`, `add_walk_in`, `call_next`, `start_service`, `finish_service`, `mark_no_show`, `readd`, `cancel_entry`, `set_break`
@@ -55,7 +57,7 @@ All of this is in one file: `supabase/migrations/20261124120000_salon_queue.sql`
   - **Demo helpers (owner PIN):**
     - `owner_demo_fill` adds 6 sample customers to an empty queue.
     - `owner_reset_today` clears today's queue and restarts tokens at S-1.
-- When a rule is broken, the function fails with a short code that the app turns into friendly text. The codes are `invalid_pin`, `invalid_phone`, `invalid_name`, `services_1_to_3`, `service_unavailable`, `barber_unavailable`, `online_closed`, `not_open_yet`, `no_barbers`, `salon_closed`, `barber_busy`, `barber_on_break`, `bad_transition`, `no_show_too_early`, `cannot_cancel`, `cannot_rate`, `cannot_readd`, `finish_current_first` and `barber_has_customers`.
+- When a rule is broken, the function fails with a short code that the app turns into friendly text. The codes are `invalid_pin`, `invalid_phone`, `invalid_name`, `services_1_to_3`, `service_unavailable`, `barber_unavailable`, `online_closed`, `not_open_yet`, `no_barbers`, `salon_closed`, `barber_busy`, `barber_on_break`, `bad_transition`, `no_show_too_early`, `cannot_cancel`, `cannot_rate`, `cannot_readd`, `finish_current_first`, `barber_has_customers` and `pin_change_locked`.
 - PINs are stored hashed, never in the frontend code.
 
 **Where the rules live (one place each)**
@@ -109,7 +111,7 @@ salon-queue/
 
    **Live demo:** https://salon-queue-<name>.vercel.app
    **Hosted on:** Vercel (frontend) + Supabase (database & realtime)
-   **Test PINs:** Staff 1234 (reception & barber screens) · Owner 9999 (admin)
+   **Test PINs:** Staff 1234 (reception & stylist screens) · Owner 9999 (admin)
    ```
 6. **Deploy early:** right after Step 2 of the build plan. Every push then redeploys automatically.
 7. **Optional keep-alive:** a free GitHub Actions cron that pings the Supabase REST endpoint once a day stops the free project from pausing before grading.
@@ -124,8 +126,8 @@ Run the app and commit after every step.
 | 1 | Set up: Vite + TS + Tailwind + PWA, router with empty pages for all screens, theme tokens, Supabase schema and demo data | All routes open; `npm run build` passes |
 | 2 | Home + Join Queue → **deploy to Vercel** | Live link works on a phone |
 | 3 | My Status: token, place, wait ring, banners, "It's your turn", cancel, rating | Checklist 1–8 pass |
-| 4 | Reception: barber cards, waiting list, Call next, walk-in, no-show, re-add | Checklist 9–15 pass |
-| 5 | Barber View + TV display (flash, chime, QR) | Checklist 23–25 pass |
+| 4 | Reception: stylist cards, waiting list, Call next, walk-in, no-show, re-add | Checklist 9–15 pass |
+| 5 | Stylist View + TV display (flash, chime, QR) | Checklist 23–25 pass |
 | 6 | Owner settings, stats and charts, QR poster | Checklist 16–21 pass |
 | 7 | Edge cases, empty states, polish, full checklist | All 27 pass |
 | 8 | README live link, `prompts.md`, reflection, demo video (`/brag` + phone screen recording) | Submission ready |

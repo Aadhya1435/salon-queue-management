@@ -22,6 +22,15 @@ export function saveMySpot(id: string, token: number) {
   }
 }
 
+/**
+ * The active spot that `id` leads to: the spot itself while it is active, or the
+ * new spot reception created for it after a no-show (Re-add). `entries` are
+ * today's active spots (Waiting / Called / In chair).
+ */
+export function currentSpot<T extends { id: string; readded_from: string | null }>(id: string, entries: readonly T[]): T | undefined {
+  return entries.find((e) => e.id === id) ?? entries.find((e) => e.readded_from === id)
+}
+
 export function clearMySpot() {
   try {
     localStorage.removeItem(KEY)

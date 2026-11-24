@@ -6,6 +6,8 @@ export type Settings = {
   open_time: string // "10:00:00"
   close_time: string // "21:00:00"
   online_open: boolean
+  /** True on the hosted demo: the published test PINs can't be changed. Missing before migration 20261124180000. */
+  pin_change_locked?: boolean
   updated_at: string
 }
 

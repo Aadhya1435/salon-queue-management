@@ -104,7 +104,7 @@ function OwnerScreen() {
           <BarbersSettings pin={pin} version={live.version} />
           <ServicesSettings pin={pin} version={live.version} />
           <PosterLink />
-          <PinSettings pin={pin} />
+          <PinSettings pin={pin} locked={settings?.pin_change_locked === true} />
           <DemoTools pin={pin} />
         </div>
       </div>

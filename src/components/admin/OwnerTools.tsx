@@ -26,8 +26,11 @@ export function PosterLink() {
 
 type Role = 'staff' | 'owner'
 
-/** Change the Staff or Owner PIN: 4 digits, typed twice, then a confirmation. */
-export function PinSettings({ pin }: { pin: string }) {
+/**
+ * Change the Staff or Owner PIN: 4 digits, typed twice, then a confirmation.
+ * `locked` (settings.pin_change_locked, the hosted demo) disables it so the published test PINs keep working.
+ */
+export function PinSettings({ pin, locked = false }: { pin: string; locked?: boolean }) {
   const [role, setRole] = useState<Role>('staff')
   const [first, setFirst] = useState('')
   const [second, setSecond] = useState('')
@@ -68,30 +71,38 @@ export function PinSettings({ pin }: { pin: string }) {
 
   return (
     <Section title="PINs" id="pins-title">
-      <form onSubmit={onSubmit} className="flex flex-col gap-3" noValidate>
-        <SegmentedControl
-          id="pin-role"
-          label="Which PIN"
-          options={[
-            { value: 'staff', label: 'Staff PIN' },
-            { value: 'owner', label: 'Owner PIN' },
-          ]}
-          value={role}
-          onChange={(r) => {
-            setRole(r)
-            setError(null)
-            setDone(null)
-          }}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          <TextField id="pin-new" label={`New ${roleName} PIN`} {...pinInput} value={first} onChange={(e) => setFirst(e.target.value.replace(/\D/g, '').slice(0, 4))} />
-          <TextField id="pin-again" label="Type it again" {...pinInput} value={second} onChange={(e) => setSecond(e.target.value.replace(/\D/g, '').slice(0, 4))} />
-        </div>
-        <Notice text={error} tone="error" />
-        <Notice text={done} tone="ok" />
-        <PillButton type="submit" disabled={first.length !== 4 || second.length !== 4}>
-          Change {roleName} PIN
-        </PillButton>
+      {locked && (
+        <p className="mb-3 rounded-tile bg-surface-2 px-4 py-3 text-small font-semibold text-text">
+          PIN changes are turned off on this demo, so the test PINs in the README always work.
+        </p>
+      )}
+      {/* A disabled fieldset turns off every field and button inside it. */}
+      <form onSubmit={onSubmit} noValidate>
+        <fieldset disabled={locked} className={`flex flex-col gap-3 ${locked ? 'opacity-50' : ''}`}>
+          <SegmentedControl
+            id="pin-role"
+            label="Which PIN"
+            options={[
+              { value: 'staff', label: 'Staff PIN' },
+              { value: 'owner', label: 'Owner PIN' },
+            ]}
+            value={role}
+            onChange={(r) => {
+              setRole(r)
+              setError(null)
+              setDone(null)
+            }}
+          />
+          <div className="grid grid-cols-2 gap-3">
+            <TextField id="pin-new" label={`New ${roleName} PIN`} {...pinInput} value={first} onChange={(e) => setFirst(e.target.value.replace(/\D/g, '').slice(0, 4))} />
+            <TextField id="pin-again" label="Type it again" {...pinInput} value={second} onChange={(e) => setSecond(e.target.value.replace(/\D/g, '').slice(0, 4))} />
+          </div>
+          <Notice text={error} tone="error" />
+          <Notice text={done} tone="ok" />
+          <PillButton type="submit" disabled={locked || first.length !== 4 || second.length !== 4}>
+            Change {roleName} PIN
+          </PillButton>
+        </fieldset>
       </form>
 
       <Sheet open={confirming} onClose={() => setConfirming(false)} title={`Change the ${roleName} PIN?`}>

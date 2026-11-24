@@ -13,7 +13,7 @@ import { friendlyError } from '../lib/errors'
 import { formatRupees, formatToken } from '../lib/format'
 import { cleanName, MAX_SERVICES, nameError, phoneError, toggleService } from '../lib/joinForm'
 import { refreshQueue, useLiveQueue } from '../lib/liveQueue'
-import { loadMySpot, saveMySpot } from '../lib/mySpot'
+import { currentSpot, loadMySpot, saveMySpot } from '../lib/mySpot'
 import { roundUpTo5, waitShort } from '../lib/queue/display'
 import { forecastQueue, newCustomerWait } from '../lib/queue/estimate'
 import { onlineJoinWindow } from '../lib/queue/joinWindow'
@@ -65,7 +65,8 @@ export default function Join() {
     { minutes: 0, price: 0 },
   )
   const window_ = settings ? onlineJoinWindow(settings, barbers, salonMinutes(new Date(now))) : null
-  const savedActive = saved && entries.some((e) => e.id === saved.id) ? saved : null
+  // This phone's spot (or the new one after a Re-add), if it is still active.
+  const savedActive = saved ? (currentSpot(saved.id, entries) ?? null) : null
 
   const nameProblem = nameError(name)
   const phoneProblem = phoneError(phone)
@@ -115,6 +116,15 @@ export default function Join() {
 
   const joinedEstimate = joined ? forecast.byEntry.get(joined.id) : undefined
   const ready = live.status === 'ready'
+  // The salon's data couldn't be loaded at all (offline, or the server is down).
+  const failed = live.status === 'error'
+  const [retrying, setRetrying] = useState(false)
+
+  async function retry() {
+    setRetrying(true)
+    await refreshQueue()
+    setRetrying(false)
+  }
 
   return (
     <main ref={scope} className="mx-auto flex min-h-dvh max-w-lg flex-col">
@@ -179,8 +189,22 @@ export default function Join() {
               {limitHint ? `Up to ${MAX_SERVICES} services` : `up to ${MAX_SERVICES}`}
             </span>
           </h2>
+          {failed && (
+            <div role="alert" className="mt-3 flex flex-col items-start gap-1.5 rounded-card bg-surface p-5 shadow-card">
+              <p className="text-body font-bold">Can't reach the salon right now.</p>
+              <p className="text-small text-muted">{live.error ?? 'Please check your connection.'}</p>
+              <button
+                type="button"
+                onClick={() => void retry()}
+                disabled={retrying}
+                className="mt-2 inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-small font-bold text-on-primary disabled:opacity-60"
+              >
+                {retrying ? 'Trying…' : 'Try again'}
+              </button>
+            </div>
+          )}
           <div className="mt-3 grid grid-cols-2 gap-2.5">
-            {!ready && [0, 1, 2, 3].map((i) => <div key={i} aria-hidden="true" className="h-[86px] animate-pulse rounded-tile bg-surface-2" />)}
+            {!ready && !failed && [0, 1, 2, 3].map((i) => <div key={i} aria-hidden="true" className="h-[86px] animate-pulse rounded-tile bg-surface-2" />)}
             {services.map((s, i) => {
               const on = chosen.includes(s.id)
               return (
@@ -222,7 +246,7 @@ export default function Join() {
         </section>
 
         {/* ── Barber ── */}
-        <section aria-labelledby="barber-title">
+        <section aria-labelledby="barber-title" hidden={failed}>
           <h2 id="barber-title" className="text-body font-bold">
             Stylist
           </h2>
@@ -252,7 +276,11 @@ export default function Join() {
                   {isSelected && <motion.span layoutId="barber-ring" transition={spring.soft} className="absolute inset-0 rounded-tile bg-accent-tint ring-2 ring-primary" />}
                   <span className="relative flex flex-col items-center gap-1">
                     {b ? <BarberAvatar name={b.name} color={b.color} shape={b.shape} size={34} /> : <AnyAvatar size={34} />}
-                    <span className="max-w-full truncate text-small font-bold">{b ? b.name : 'Any'}</span>
+                    {b ? (
+                      <span className="max-w-full truncate text-small font-bold">{b.name}</span>
+                    ) : (
+                      <span className="max-w-full text-center text-small leading-tight font-bold">Any stylist</span>
+                    )}
                     <span className="num text-caption text-muted">{b?.on_break ? 'On break' : w === null ? '—' : waitShort(w)}</span>
                   </span>
                 </motion.button>
@@ -278,17 +306,20 @@ export default function Join() {
             </motion.p>
           )}
         </AnimatePresence>
-        <TurnStrip
-          wait={wait}
-          now={now}
-          barberName={barber?.name ?? null}
-          onBreak={Boolean(barber?.on_break)}
-          services={chosen.length}
-          minutes={totals.minutes}
-        />
+        {!failed && (
+          <TurnStrip
+            wait={wait}
+            now={now}
+            barberName={barber?.name ?? null}
+            onBreak={Boolean(barber?.on_break)}
+            services={chosen.length}
+            minutes={totals.minutes}
+          />
+        )}
         <PillButton onClick={onConfirm} disabled={!canConfirm && submit === 'idle'} state={submit}>
           Confirm{chosen.length > 0 && <span className="num"> · {formatRupees(totals.price)}</span>}
         </PillButton>
+        {failed && <p className="-mt-1 text-center text-caption text-muted">Reconnect to join the queue</p>}
         {window_?.open && missing && submit === 'idle' && <p className="-mt-1 text-center text-caption text-muted">{missing} to continue</p>}
       </footer>
 

@@ -94,7 +94,7 @@ export default function BarbersSettings({ pin, version }: { pin: string; version
       id="barbers-title"
       action={
         <SmallButton onClick={() => setEditing({ id: null, name: '', color: COLORS[0].hex, shape: 'star', sort: nextSort })} disabled={!barbers}>
-          <Plus size={16} aria-hidden="true" /> Add barber
+          <Plus size={16} aria-hidden="true" /> Add stylist
         </SmallButton>
       }
     >

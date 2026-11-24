@@ -294,7 +294,7 @@ function BarberView({ barber }: { barber: BarberRow }) {
               </span>
               <h2 className="mt-3 text-heading font-extrabold tracking-tight">On break</h2>
               <p className="mt-1 text-small text-muted">
-                Customers who chose you see “{barber.name} is on break”. Any-barber customers go to the others.
+                Customers who chose you see “{barber.name} is on break”. “Any stylist” customers go to the others.
               </p>
               {error && (
                 <p role="alert" className="mt-3 text-small font-semibold text-danger">

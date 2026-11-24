@@ -106,7 +106,7 @@ export default function WaitingList({ waiting, barbers, forecast, now, onCancel 
                         <span className="truncate">{wants.name}</span>
                       </>
                     ) : (
-                      <span className="text-muted">Any</span>
+                      <span className="text-muted">Any stylist</span>
                     )}
                   </span>
                   <span

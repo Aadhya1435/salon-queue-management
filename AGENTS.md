@@ -1,6 +1,6 @@
 # AGENTS.md — Roselle (Salon Queue Management)
 
-**Roselle** is a mobile-first PWA for a salon queue. Customers join from their phone, see their place and wait, and get called. Reception and barbers run the queue, a TV shows who's next, and the owner sees today's stats.
+**Roselle** is a mobile-first PWA for a salon queue. Customers join from their phone, see their place and wait, and get called. Reception and stylists run the queue, a TV shows who's next, and the owner sees today's stats.
 
 > Roselle is a salon for women: screens say **stylist**; the database and code still use `barber` (table `barbers`, `/barber/*` routes kept as aliases of `/stylist/*`).
 

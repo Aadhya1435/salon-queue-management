@@ -14,7 +14,7 @@ import { friendlyError } from '../lib/errors'
 import { formatToken, ordinal } from '../lib/format'
 import { phoneError } from '../lib/joinForm'
 import { refreshQueue, useLiveQueue } from '../lib/liveQueue'
-import { loadMySpot, saveMySpot } from '../lib/mySpot'
+import { currentSpot, loadMySpot, saveMySpot } from '../lib/mySpot'
 import { waitPhrase } from '../lib/queue/display'
 import { barberNow, forecastQueue, newCustomerWait, type BarberNow } from '../lib/queue/estimate'
 import { onlineJoinWindow, openStatus } from '../lib/queue/joinWindow'
@@ -39,7 +39,8 @@ export default function Home() {
   const status = settings ? openStatus(settings, nowMinutes) : null
   const joinWindow = settings ? onlineJoinWindow(settings, barbers, nowMinutes) : null
 
-  const mySpot = saved ? entries.find((e) => e.id === saved.id) : undefined
+  // The saved spot, or the new one if reception re-added it after a no-show.
+  const mySpot = saved ? currentSpot(saved.id, entries) : undefined
   const myEstimate = mySpot ? forecast.byEntry.get(mySpot.id) : undefined
 
   useEffect(() => {
