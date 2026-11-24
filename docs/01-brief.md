@@ -56,7 +56,7 @@ Friendly and modern ("Plum & Orchid"), mobile-first:
 Details are in [02-screens.md → Design system](02-screens.md).
 
 ## Demo data
-- **Salon:** Kesh Studio · open 10:00 AM – 9:00 PM · online joining closes 8:30 PM
+- **Salon:** Roselle · open 10:00 AM – 9:00 PM · online joining closes 8:30 PM
   - The hosted demo starts with hours of 12:00 AM – 11:59 PM, so the TA can test it at any time.
   - To show the closing rules, switch to 10:00 AM – 9:00 PM in Owner settings.
 - **Barbers:** Ravi, Amit, Imran

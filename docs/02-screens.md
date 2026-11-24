@@ -59,7 +59,7 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
    - Secondary: a white pill with dark text.
    - On dark panels: a white pill.
 2. **Round icon button:** a 44–48 px white circle (back, search, ⋯).
-3. **Identity row:** an avatar or logo plus two lines ("Kesh Studio" / "Open · until 9 PM"). On dark panels it has no background.
+3. **Identity row:** an avatar or logo plus two lines ("Roselle" / "Open · until 9 PM"). On dark panels it has no background.
 4. **Summary pill:** a full-width dark pill with one key fact and "View ›" (Home's "My spot").
 5. **Gradient feature card:** `hero → hero-2` with white text and an avatar overlapping its top edge (the token card, the barber's current customer).
 6. **Chips:** mauve pills. Selected = aubergine fill with white text (barber picker, filters).
@@ -171,7 +171,7 @@ These work on phones that support them and are never required.
 
 **Phone layout, top to bottom**
 1. **Hero panel** (dark plum `hero` gradient, bottom corners rounded 32, white text). Keep it calm: three groups (who we are, how busy it is, join) with generous space between them.
-   - **Identity row:** logo circle "K", "Kesh Studio", and `● Open · until 9 PM` (or `● Closed · opens 10 AM`) underneath. There's no pill background and no extra buttons; Find my spot is the link below the barbers.
+   - **Identity row:** logo circle "R", "Roselle", and `● Open · until 9 PM` (or `● Closed · opens 10 AM`) underneath. There's no pill background and no extra buttons; Find my spot is the link below the barbers.
    - **Corner art:** a small blob cluster (3–4 shapes) tucked into the top-right corner and cropped by the panel edge. It never gets a row of its own.
    - "**6** waiting" (big number), "about **50 min** if you join now", and a small `● Live` dot (grey when offline).
    - Empty state: "No one waiting — walk right in!"
@@ -252,7 +252,7 @@ These work on phones that support them and are never required.
 |---|---|
 | **Called** | Full-screen plum takeover with the blob cluster drifting: the barber's avatar with a slow pulse, "**It's your turn!**", "Go to **Amit**", an orchid token pill "S-14", and "Show this screen at the desk". The phone vibrates (pattern 200-100-200 ms) where supported. |
 | **In chair** | "You're with Amit", the elapsed time and the services. |
-| **Done** | "Thanks for visiting Kesh Studio!" and "How was your visit with Amit?", with 5 large stars and [Skip]. After a tap: "Thanks! See you next time" and [Join again]. |
+| **Done** | "Thanks for visiting Roselle!" and "How was your visit with Amit?", with 5 large stars and [Skip]. After a tap: "Thanks! See you next time" and [Join again]. |
 | **Cancelled** | "Your spot was cancelled" (by you / by the salon) and [Join again]. |
 | **No-show** | "You missed your turn. Please speak to reception." |
 | **Unknown / old link** | "This spot isn't active any more" and [Go to home]. |

@@ -42,7 +42,7 @@ export default function Home() {
   const myEstimate = mySpot ? forecast.byEntry.get(mySpot.id) : undefined
 
   useEffect(() => {
-    document.title = settings ? `${settings.salon_name} · Roselle` : 'Roselle'
+    document.title = settings && settings.salon_name !== 'Roselle' ? `${settings.salon_name} · Roselle` : 'Roselle'
   }, [settings])
 
   const salonName = settings?.salon_name ?? 'Roselle'

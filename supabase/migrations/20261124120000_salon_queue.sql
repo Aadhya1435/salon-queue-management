@@ -18,7 +18,7 @@ create schema if not exists private;
 
 create table public.settings (
   id          int primary key default 1 check (id = 1),
-  salon_name  text not null default 'Kesh Studio',
+  salon_name  text not null default 'Roselle',
   open_time   time not null default '10:00',
   close_time  time not null default '21:00',
   online_open boolean not null default true,
@@ -665,7 +665,7 @@ end $$;
 -- Switch to 10:00 AM – 9:00 PM in Owner settings to show the closing rules.
 
 insert into public.settings (id, salon_name, open_time, close_time, online_open)
-values (1, 'Kesh Studio', '00:00', '23:59', true);
+values (1, 'Roselle', '00:00', '23:59', true);
 
 insert into private.pins (role, pin_hash) values
   ('staff', extensions.crypt('1234', extensions.gen_salt('bf'))),
