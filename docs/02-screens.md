@@ -59,14 +59,16 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
    - Secondary: a white pill with dark text.
    - On dark panels: a white pill.
 2. **Round icon button:** a 44–48 px white circle (back, search, ⋯).
-3. **Identity pill:** an avatar or logo plus two lines ("Kesh Studio" / "Open · until 9 PM").
+3. **Identity row:** an avatar or logo plus two lines ("Kesh Studio" / "Open · until 9 PM"). On dark panels it has no background.
 4. **Summary pill:** a full-width dark pill with one key fact and "View ›" (Home's "My spot").
 5. **Gradient feature card:** `hero → hero-2` with white text and an avatar overlapping its top edge (the token card, the barber's current customer).
 6. **Chips:** mauve pills. Selected = aubergine fill with white text (barber picker, filters).
 7. **Selectable tiles:** white. Selected = a 2 px aubergine ring and a round check badge (service picker).
 8. **Count badge:** a small orchid circle with a white number ("Services ②", "Barbers today ③").
-9. **Blob cluster:** 6–8 soft shapes (circle, pill, 4-point star, clover) in the blob colours.
-   - Only on the Home hero, "It's your turn", the TV's idle state, the QR poster and empty states.
+9. **Blob cluster:** soft shapes (circle, pill, 4-point star, clover) in the blob colours.
+   - **Home:** a small corner cluster of 3–4 shapes, cropped by the hero's top-right edge.
+   - **"It's your turn", the TV's idle state, the QR poster:** the fuller cluster of 6–8 shapes.
+   - **Empty states:** 3 shapes at most.
    - At most one cluster per screen.
    - They drift slowly, and stay still when *reduce motion* is on.
 10. **Segmented control:** a pill track in `surface-2` with an aubergine thumb (Admin's Today | Settings).
@@ -160,7 +162,6 @@ These work on phones that support them and are never required.
   - While a barber is busy, a thin ring around the avatar shows how much of the current service is done.
 - **Journey tracker on My Status.** Five dots, Joined · Coming · Your turn · In chair · Done, with the current one glowing orchid. Like a delivery tracker, it shows where you are at a glance.
 - **"You're in!" celebration** between Confirm and My Status (moment 7).
-- **Greeting on Home** by time of day: "Good morning", "Good afternoon" or "Good evening".
 - **"We'll call you around 2:25 PM"** on My Status: now + the estimated wait, from the same rule as the ring.
 
 ---
@@ -169,9 +170,9 @@ These work on phones that support them and are never required.
 **Who / why:** a customer, on their phone, checks how busy the salon is and joins.
 
 **Phone layout, top to bottom**
-1. **Hero panel** (dark plum `hero` gradient, bottom corners rounded 32, white text):
-   - **Identity pill:** logo circle "K", "Kesh Studio", and `● Open · until 9 PM` (or `● Closed · opens 10 AM`). A round white **search** button on the right opens Find my spot.
-   - A **greeting** by time of day ("Good afternoon") and the **blob cluster** band (decoration).
+1. **Hero panel** (dark plum `hero` gradient, bottom corners rounded 32, white text). Keep it calm: three groups (who we are, how busy it is, join) with generous space between them.
+   - **Identity row:** logo circle "K", "Kesh Studio", and `● Open · until 9 PM` (or `● Closed · opens 10 AM`) underneath. There's no pill background and no extra buttons; Find my spot is the link below the barbers.
+   - **Corner art:** a small blob cluster (3–4 shapes) tucked into the top-right corner and cropped by the panel edge. It never gets a row of its own.
    - "**6** waiting" (big number), "about **50 min** if you join now", and a small `● Live` dot (grey when offline).
    - Empty state: "No one waiting — walk right in!"
    - **[ Join the queue › ]**, a white pill button with an arrow bubble.
