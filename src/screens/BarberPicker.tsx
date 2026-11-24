@@ -26,7 +26,7 @@ function Picker() {
   const ready = live.status === 'ready'
 
   useEffect(() => {
-    document.title = 'Which barber? · Roselle'
+    document.title = 'Which stylist? · Roselle'
   }, [])
 
   return (
@@ -45,7 +45,7 @@ function Picker() {
         </button>
       </header>
 
-      <h1 className="mt-4 text-heading font-extrabold tracking-tight">Which barber are you?</h1>
+      <h1 className="mt-4 text-heading font-extrabold tracking-tight">Which stylist are you?</h1>
       <p className="mt-1 text-small text-muted">Pick your name once. Bookmark the page on this phone.</p>
 
       <ul className="mt-6 flex flex-col gap-3">
@@ -58,14 +58,14 @@ function Picker() {
             </button>
           </li>
         )}
-        {ready && live.barbers.length === 0 && <li className="rounded-card bg-surface p-5 text-small text-muted shadow-card">No barbers on duty today.</li>}
+        {ready && live.barbers.length === 0 && <li className="rounded-card bg-surface p-5 text-small text-muted shadow-card">No stylists on duty today.</li>}
         {ready &&
           live.barbers.map((b, i) => {
             const state = barberNow(b, live.entries, now)
             return (
               <motion.li key={b.id} {...rise} transition={{ ...transition.card, delay: i * stagger.list }}>
                 <Link
-                  to={`/barber/${b.slug}`}
+                  to={`/stylist/${b.slug}`}
                   className="flex min-h-24 items-center gap-4 rounded-card bg-surface py-4 pr-4 pl-4 shadow-card transition-transform active:scale-[0.98]"
                 >
                   <BarberAvatar name={b.name} color={b.color} shape={b.shape} size={60} progress={state.kind === 'busy' ? state.progress : null} />

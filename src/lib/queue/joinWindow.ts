@@ -26,7 +26,7 @@ export function onlineJoinWindow(settings: Hours, barbersOnDuty: readonly Pick<B
   if (!settings.online_open || nowMinutes >= close - ONLINE_CLOSES_BEFORE_CLOSING) {
     return { open: false, reason: 'online_closed', message: `Online queue is closed right now. Walk-ins welcome until ${closes}.` }
   }
-  if (!barbersOnDuty.some((b) => b.on_duty)) return { open: false, reason: 'no_barbers', message: 'No barbers available right now.' }
+  if (!barbersOnDuty.some((b) => b.on_duty)) return { open: false, reason: 'no_barbers', message: 'No stylists available right now.' }
   return { open: true }
 }
 

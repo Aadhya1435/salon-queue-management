@@ -224,7 +224,7 @@ export default function Join() {
         {/* ── Barber ── */}
         <section aria-labelledby="barber-title">
           <h2 id="barber-title" className="text-body font-bold">
-            Barber
+            Stylist
           </h2>
           <div role="radiogroup" aria-labelledby="barber-title" className="-mx-5 mt-3 flex gap-2 overflow-x-auto px-5 pt-1 pb-2 [scrollbar-width:none]">
             {[null, ...barbers].map((b, i) => {
@@ -328,11 +328,11 @@ function TurnStrip({ wait, now, barberName, onBreak, services, minutes }: TurnSt
     main = `${barberName} is on break`
     sub = `No estimate until ${barberName} is back`
   } else if (wait === null) {
-    main = 'No barbers available'
+    main = 'No stylists available'
     sub = detail
   } else if (wait < 1) {
     main = 'No wait right now'
-    sub = `A barber is free · ${detail}`
+    sub = `A stylist is free · ${detail}`
   } else {
     main = (
       <>

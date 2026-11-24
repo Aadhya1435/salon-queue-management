@@ -126,7 +126,7 @@ export default function Status() {
       </Shell>
     )
 
-  const barberName = barber?.name ?? (entry.barber_pref === null ? 'your barber' : 'your barber')
+  const barberName = barber?.name ?? (entry.barber_pref === null ? 'your stylist' : 'your stylist')
 
   switch (entry.status) {
     case 'waiting':
@@ -213,12 +213,12 @@ function Waiting({ entry, barber, tokenCardRef }: { entry: QueueEntry; barber: B
     setShine((n) => n + 1)
   }, [place])
 
-  const prefName = barber?.name ?? 'Your barber'
+  const prefName = barber?.name ?? 'Your stylist'
   const banner =
     wait === null
       ? entry.barber_pref
         ? `${prefName} is on break. Your wait will update when ${prefName} is back.`
-        : 'No barbers available right now. Your wait will update soon.'
+        : 'No stylists available right now. Your wait will update soon.'
       : place === 1
         ? "You're next! Please be at the salon"
         : place === 2
@@ -230,7 +230,7 @@ function Waiting({ entry, barber, tokenCardRef }: { entry: QueueEntry; barber: B
   const ahead = place !== null ? Math.max(0, place - 1) : null
 
   let turnLine: ReactNode = 'Working out your wait…'
-  if (wait === null) turnLine = 'Your wait will update when your barber is back.'
+  if (wait === null) turnLine = 'Your wait will update when your stylist is back.'
   else if (typeof wait === 'number' && place !== null) {
     const phrase = waitPhrase(wait, place)
     turnLine = (
@@ -279,7 +279,7 @@ function Waiting({ entry, barber, tokenCardRef }: { entry: QueueEntry; barber: B
             <p className="text-caption font-bold tracking-[0.2em] text-white/70">TOKEN</p>
             <p className="num mt-1 text-token font-extrabold tracking-tight">{formatToken(entry.token)}</p>
             <p className="mt-2 text-small text-white/85">
-              {services} · {entry.barber_pref ? prefName : 'Any barber'}
+              {services} · {entry.barber_pref ? prefName : 'Any stylist'}
             </p>
           </motion.div>
 

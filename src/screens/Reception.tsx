@@ -182,7 +182,7 @@ function Dashboard() {
 
       <LayoutGroup>
         {/* ── Barber cards ── */}
-        <section aria-label="Barbers on duty">
+        <section aria-label="Stylists on duty">
           {!ready ? (
             <div className={`grid gap-4 ${gridCols}`}>
               {[0, 1, 2].map((i) => (
@@ -190,7 +190,7 @@ function Dashboard() {
               ))}
             </div>
           ) : barbers.length === 0 ? (
-            <p className="rounded-card bg-surface p-5 text-small text-muted shadow-card">No barbers on duty today.</p>
+            <p className="rounded-card bg-surface p-5 text-small text-muted shadow-card">No stylists on duty today.</p>
           ) : (
             <div className={`grid gap-4 ${gridCols}`}>
               {barbers.map((b) => (

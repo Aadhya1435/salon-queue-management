@@ -118,7 +118,7 @@ export default function Display() {
             {!ready &&
               [0, 1, 2].map((i) => <li key={i} aria-hidden="true" className="flex-1 animate-pulse rounded-[3vh] bg-tv-surface" />)}
             {ready && barbers.length === 0 && (
-              <li className="grid flex-1 place-items-center rounded-[3vh] bg-tv-surface text-[4vh] text-tv-muted">No barbers on duty right now.</li>
+              <li className="grid flex-1 place-items-center rounded-[3vh] bg-tv-surface text-[4vh] text-tv-muted">No stylists on duty right now.</li>
             )}
             {ready &&
               barbers.map((b) => (

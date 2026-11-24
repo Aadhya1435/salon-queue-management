@@ -9,9 +9,9 @@ import { rise, stagger, transition } from '../styles/motion'
 
 const TILES = [
   { to: '/reception', label: 'Reception', note: 'Walk-ins, call next, no-shows', pin: 'Staff PIN', Icon: Tablet },
-  { to: '/barber', label: 'Barber', note: 'Start and Done from your phone', pin: 'Staff PIN', Icon: Scissors },
+  { to: '/stylist', label: 'Stylist', note: 'Start and Done from your phone', pin: 'Staff PIN', Icon: Scissors },
   { to: '/display', label: 'TV display', note: 'Now serving and up next', pin: 'No PIN', Icon: MonitorPlay },
-  { to: '/admin', label: 'Owner', note: 'Services, barbers, open/close, stats', pin: 'Owner PIN', Icon: Crown },
+  { to: '/admin', label: 'Owner', note: 'Services, stylists, open/close, stats', pin: 'Owner PIN', Icon: Crown },
 ]
 
 /** Screen 9: Staff hub (docs/02-screens.md). One place for staff to open their screen. */

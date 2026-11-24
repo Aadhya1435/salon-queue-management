@@ -20,7 +20,7 @@ type Props = {
 export default function CalledTakeover({ token, barber, originRef, live }: Props) {
   const reduce = useReducedMotion()
   const [scope, animate] = useAnimate<HTMLDivElement>()
-  const barberName = barber?.name ?? 'your barber'
+  const barberName = barber?.name ?? 'your stylist'
 
   useEffect(() => {
     // Browsers refuse (and log) vibration before the first tap on the page.

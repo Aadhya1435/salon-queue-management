@@ -98,7 +98,7 @@ export function PinSettings({ pin }: { pin: string }) {
         <p className="text-body">
           {role === 'owner'
             ? 'Other devices signed in with the old Owner PIN will be asked for the new one.'
-            : 'Reception and barber devices will be asked for the new Staff PIN.'}
+            : 'Reception and stylist devices will be asked for the new Staff PIN.'}
         </p>
         <ConfirmButtons confirm="Change PIN" onConfirm={() => void change()} onCancel={() => setConfirming(false)} busy={busy} />
       </Sheet>

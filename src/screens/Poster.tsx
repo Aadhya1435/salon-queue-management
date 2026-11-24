@@ -8,7 +8,7 @@ import { useLiveQueue } from '../lib/liveQueue'
 
 const STEPS = [
   { title: 'Scan', text: 'Point your phone camera at the code.' },
-  { title: 'Pick services', text: 'Choose up to 3 and any barber you like.' },
+  { title: 'Pick services', text: 'Choose up to 3 and any stylist you like.' },
   { title: "We'll call you", text: 'Watch your place live. Relax nearby.' },
 ]
 

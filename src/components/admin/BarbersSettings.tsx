@@ -90,7 +90,7 @@ export default function BarbersSettings({ pin, version }: { pin: string; version
 
   return (
     <Section
-      title="Barbers"
+      title="Stylists"
       id="barbers-title"
       action={
         <SmallButton onClick={() => setEditing({ id: null, name: '', color: COLORS[0].hex, shape: 'star', sort: nextSort })} disabled={!barbers}>
@@ -128,7 +128,7 @@ export default function BarbersSettings({ pin, version }: { pin: string; version
           <>
             <p className="text-body text-text">
               {move.barber.name} still has <span className="num font-bold">{move.count || 'some'}</span> {move.count === 1 ? 'customer' : 'customers'} waiting.
-              Move them to ‘Any barber’?
+              Move them to ‘Any stylist’?
             </p>
             <p className="mt-2 text-small text-muted">They keep their places in the queue.</p>
             <ConfirmButtons confirm="Move & turn off" onConfirm={() => void confirmMove()} onCancel={() => setMove(null)} busy={moving} />
@@ -181,7 +181,7 @@ function BarberEditor({ pin, editing, onClose, onSaved }: { pin: string; editing
 
   const current = draft ?? editing
   return (
-    <Sheet open={editing !== null} onClose={onClose} title={editing?.id ? 'Edit barber' : 'Add barber'}>
+    <Sheet open={editing !== null} onClose={onClose} title={editing?.id ? 'Edit stylist' : 'Add stylist'}>
       {current && (
         <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
           <div className="flex items-center gap-4">
@@ -231,7 +231,7 @@ function BarberEditor({ pin, editing, onClose, onSaved }: { pin: string; editing
           </fieldset>
           <Notice text={error} tone="error" />
           <PillButton type="submit" state={busy ? 'loading' : 'idle'}>
-            {editing?.id ? 'Save barber' : 'Add barber'}
+            {editing?.id ? 'Save stylist' : 'Add stylist'}
           </PillButton>
         </form>
       )}

@@ -210,9 +210,9 @@ function WalkInForm({ pin, services, barbers, forecast, onAdded, onClose }: Omit
         </fieldset>
 
         <fieldset>
-          <legend className="mb-1.5 text-caption font-semibold text-muted">Barber</legend>
+          <legend className="mb-1.5 text-caption font-semibold text-muted">Stylist</legend>
           <div className="flex flex-wrap gap-2">
-            <BarberChip selected={barberId === null} onClick={() => setBarberId(null)} label="Any barber">
+            <BarberChip selected={barberId === null} onClick={() => setBarberId(null)} label="Any stylist">
               <AnyAvatar size={28} />
             </BarberChip>
             {barbers.map((b) => (
@@ -231,7 +231,7 @@ function WalkInForm({ pin, services, barbers, forecast, onAdded, onClose }: Omit
             {chosen.length === 0 ? 'No services yet' : `${chosen.length} service${chosen.length > 1 ? 's' : ''} · ${minutes} min · ${formatRupees(price)}`}
           </span>
           <span className="num text-right font-semibold">
-            {wait === null ? (chosenBarber ? `${chosenBarber.name} is on break` : 'No barbers working') : wait < 1 ? 'No wait: next in the chair' : `Your turn in ${waitPhrase(wait)}`}
+            {wait === null ? (chosenBarber ? `${chosenBarber.name} is on break` : 'No stylists working') : wait < 1 ? 'No wait: next in the chair' : `Your turn in ${waitPhrase(wait)}`}
           </span>
         </div>
         {message && (

@@ -41,7 +41,7 @@ export type QueueEntry = {
   day: string
   token: number
   first_name: string
-  barber_pref: string | null // null = "Any barber"
+  barber_pref: string | null // null = "Any stylist"
   assigned_barber: string | null
   services: ServiceSnapshot[]
   total_minutes: number

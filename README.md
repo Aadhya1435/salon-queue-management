@@ -2,7 +2,7 @@
 
 **Live demo:** https://roselle-salon.vercel.app
 **Hosted on:** Vercel (frontend) + Supabase (database & realtime)
-**Test PINs:** Staff `1234` (reception & barber screens) · Owner `9999` (owner settings)
+**Test PINs:** Staff `1234` (reception & stylist screens) · Owner `9999` (owner settings, opens everything)
 
 ## About
 A mobile-first web app (installable PWA) for a salon queue:

@@ -1,4 +1,5 @@
--- Women's salon menu: "Fill demo queue" books the new services with female sample names.
+-- Women's salon: "Fill demo queue" books the new services with female sample names,
+-- and its sample stylist choices use the stylists' new addresses (neha, ayesha).
 -- Run once in Supabase → SQL Editor (the service menu itself was updated through the
 -- owner functions; this only refreshes the demo helper).
 
@@ -8,7 +9,7 @@ declare
   v_names text[] := array['Priya Patel', 'Meera Joshi', 'Ananya Rao', 'Zoya Khan', 'Kavya Iyer', 'Riya Shah'];
   v_mins  int[]  := array[70, 52, 38, 25, 12, 4];
   v_svc   text[][] := array[['Haircut & blow-dry', 'Eyebrow threading'], ['Hair spa', ''], ['Blow-dry & styling', ''], ['Facial', 'Eyebrow threading'], ['Manicure', 'Pedicure'], ['Waxing (full arms)', '']];
-  v_pref  text[] := array['', 'ravi', '', 'amit', 'ravi', ''];
+  v_pref  text[] := array['', 'neha', '', 'ayesha', 'neha', ''];
   i int; v_ids uuid[]; v_barber uuid; r json;
 begin
   perform private.check_pin(p_pin, 'owner');

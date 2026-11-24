@@ -179,7 +179,7 @@ export function StatCharts({ stats, settings, barbers }: { stats: OwnerStats | n
         </ResponsiveContainer>
       </ChartCard>
 
-      <ChartCard title="Served per barber" sub="With each barber's average rating">
+      <ChartCard title="Served per stylist" sub="With each stylist's average rating">
         <ResponsiveContainer width="100%" height={Math.max(120, perBarber.length * 46)}>
           <BarChart data={perBarber} layout="vertical" margin={{ top: 0, right: 72, bottom: 0, left: 0 }}>
             <XAxis type="number" hide allowDecimals={false} domain={[0, (max: number) => Math.max(1, max)]} />

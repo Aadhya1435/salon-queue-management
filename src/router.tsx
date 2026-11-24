@@ -34,6 +34,9 @@ export const router = createBrowserRouter([
       { path: 'join', lazy: screen(() => import('./screens/Join')) },
       { path: 'status/:id', lazy: screen(() => import('./screens/Status')) },
       { path: 'reception', lazy: screen(() => import('./screens/Reception')) },
+      { path: 'stylist', lazy: screen(() => import('./screens/BarberPicker')) },
+      { path: 'stylist/:name', lazy: screen(() => import('./screens/Barber')) },
+      // Old addresses keep working.
       { path: 'barber', lazy: screen(() => import('./screens/BarberPicker')) },
       { path: 'barber/:name', lazy: screen(() => import('./screens/Barber')) },
       { path: 'display', lazy: screen(() => import('./screens/Display')) },

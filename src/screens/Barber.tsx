@@ -34,7 +34,7 @@ function BarberScreen() {
   const barber = live.barbers.find((b) => b.slug === name)
 
   useEffect(() => {
-    document.title = barber ? `${barber.name} · Roselle` : 'Barber · Roselle'
+    document.title = barber ? `${barber.name} · Roselle` : 'Stylist · Roselle'
   }, [barber])
 
   if (live.status === 'loading') {
@@ -49,10 +49,10 @@ function BarberScreen() {
   if (!barber) {
     return (
       <main className="mx-auto flex min-h-dvh max-w-xl flex-col items-center justify-center gap-4 px-5 text-center">
-        <h1 className="text-title font-bold">{live.status === 'error' ? "Can't reach the salon right now." : 'This barber isn’t on duty today.'}</h1>
-        <p className="text-small text-muted">Pick your name from the list of barbers working today.</p>
-        <Link to="/barber" className="flex min-h-11 items-center rounded-full bg-primary px-6 text-body font-bold text-on-primary">
-          Pick a barber
+        <h1 className="text-title font-bold">{live.status === 'error' ? "Can't reach the salon right now." : 'This stylist isn’t on duty today.'}</h1>
+        <p className="text-small text-muted">Pick your name from the list of stylists working today.</p>
+        <Link to="/stylist" className="flex min-h-11 items-center rounded-full bg-primary px-6 text-body font-bold text-on-primary">
+          Pick a stylist
         </Link>
       </main>
     )
@@ -229,7 +229,7 @@ function BarberView({ barber }: { barber: BarberRow }) {
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-body font-bold">
                     {next.full_name ?? next.first_name}
-                    {next.barber_pref === null && <span className="font-medium text-muted"> · any barber</span>}
+                    {next.barber_pref === null && <span className="font-medium text-muted"> · any stylist</span>}
                   </p>
                   <p className="num truncate text-small text-muted">
                     {next.services.map((s) => s.name).join(', ')} · waiting {minutesSince(next.joined_at, now)} min
@@ -246,7 +246,7 @@ function BarberView({ barber }: { barber: BarberRow }) {
                 <span className="num">{waitingForMe.length}</span> waiting for you
               </p>
               <p className="num mt-0.5 text-small text-muted">
-                {choseMe} chose you · {anyBarber} any barber
+                {choseMe} chose you · {anyBarber} any stylist
               </p>
             </div>
             <div className="rounded-card bg-surface p-5 text-center shadow-card">
@@ -316,7 +316,7 @@ function FreeHero({ hasNext, name }: { hasNext: boolean; name: string }) {
       <p className="text-caption font-bold tracking-wide text-white/70 uppercase">{hasNext ? 'Ready' : 'All clear'}</p>
       <p className="mt-2 text-big font-extrabold tracking-tight">{hasNext ? "You're free" : 'No one waiting for you'}</p>
       <p className="mt-2 text-small text-white/80">
-        {hasNext ? 'Tap Call next when your chair is ready.' : `New customers who choose ${name} or Any barber show up here.`}
+        {hasNext ? 'Tap Call next when your chair is ready.' : `New customers who choose ${name} or Any stylist show up here.`}
       </p>
     </div>
   )

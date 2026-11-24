@@ -50,7 +50,7 @@ export default function Home() {
 
   let subLine: React.ReactNode = 'Checking the queue…'
   if (live.status === 'error') subLine = "Can't reach the salon right now."
-  else if (ready && newWait === null) subLine = 'No barbers available right now.'
+  else if (ready && newWait === null) subLine = 'No stylists available right now.'
   else if (ready && newWait !== null && waitingCount === 0 && newWait < 1) subLine = 'No one waiting — walk right in!'
   else if (ready && newWait !== null) subLine = <>{capitalise(waitPhrase(newWait))} if you join now</>
 
@@ -118,7 +118,7 @@ export default function Home() {
       <div className="flex flex-1 flex-col lg:min-h-full">
         <section aria-labelledby="barbers-title" className="px-5 pt-7 lg:px-0 lg:pt-2">
           <h2 id="barbers-title" className="flex items-center gap-2 text-body font-bold">
-            Barbers today
+            Stylists today
             {ready && (
               <span className="num grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1.5 text-caption font-bold text-on-accent">{barbers.length}</span>
             )}
@@ -126,7 +126,7 @@ export default function Home() {
           <ul className="mt-3 flex flex-col gap-2.5">
             {!ready &&
               [0, 1, 2].map((i) => <li key={i} aria-hidden="true" className="h-16 animate-pulse rounded-card bg-surface-2" />)}
-            {ready && barbers.length === 0 && <li className="rounded-card bg-surface p-5 text-small text-muted shadow-card">No barbers on duty today.</li>}
+            {ready && barbers.length === 0 && <li className="rounded-card bg-surface p-5 text-small text-muted shadow-card">No stylists on duty today.</li>}
             {ready &&
               barbers.map((b, i) => {
                 const state = barberNow(b, entries, now)
