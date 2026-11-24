@@ -1,4 +1,4 @@
-# Salon Queue Management System
+# Waitly — Salon Queue Management System
 
 **Live demo:** _link added after the first successful Vercel deploy_
 **Hosted on:** Vercel (frontend) + Supabase (database & realtime)
