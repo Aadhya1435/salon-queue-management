@@ -25,21 +25,37 @@ Use the latest stable version of each package at setup time.
 - Queue rules such as Call next run as **database functions**, one at a time. Two people tapping Call next together can't grab the same customer.
 - The result is one less service to deploy and explain: **Vercel (app) + Supabase (data)**.
 
-## 2. How the data works (the agent may refine this)
+## 2. How the data works
 
-**Tables**
-- `settings` (one row): salon name, open and close time, online queue open/closed, hashed PINs
-- `barbers`: name, colour, on duty, on break, sort order
+All of this is in one file: `supabase/migrations/20261124120000_salon_queue.sql`. It was tested in Postgres with 46 rule checks covering security, joining, Call next preferences, no-shows, breaks, duty, stats and the demo helpers.
+
+**Public tables** (anyone can read, nobody can write directly)
+- `settings` (one row): salon name, open and close time, online queue open/closed
+- `barbers`: name, slug (for `/barber/ravi`), colour, signature shape, on duty, on break, sort order
 - `services`: name, minutes, price, active, sort order
-- `queue_entries`: random id, day, token number, first name, chosen barber (or Any), assigned barber, services (copied at join time), total minutes and price, status, source (online/walk-in), and the times it was joined, called, started and finished. Also the rating and, for a re-added no-show, the original entry it was re-added from.
-- `customer_contacts`: phone numbers, kept apart so the public can never read them
+- `queue_entries`:
+  - random id, day, token number, **first name only**
+  - chosen barber (or Any) and assigned barber
+  - services (copied at join time), total minutes and price
+  - status and source (online/walk-in)
+  - the times it was joined, called, started, finished and cancelled
+  - the rating, and for a re-added no-show, the original entry it was re-added from
+
+**Private tables** (in the `private` schema, which the browser can't reach)
+- `pins`: hashed Staff and Owner PINs
+- `contacts`: full name and phone for each spot
+- `token_counters`: the S-1, S-2 … counter for each day
 
 **Security**
 - The browser uses Supabase's public **publishable key** (called the anon key in older projects). Row-level security lets the public **read only** non-private data: settings without PINs, barbers, services, and queue entries without phones.
 - **No table is written directly from the browser.** Every change goes through a database function:
-  - Public: `join_queue`, `find_my_spot`, `cancel_my_spot`, `rate_visit`
-  - Staff (need the PIN): `call_next`, `start_service`, `finish_service`, `mark_no_show`, `readd`, `cancel_entry`, `add_walk_in`, `set_break`
-  - Owner (need the owner PIN): settings, services and barbers changes, and today's stats
+  - **Public:** `join_queue`, `find_my_spot`, `cancel_my_spot`, `rate_visit`
+  - **Staff (need the PIN):** `staff_login`, `staff_queue`, `add_walk_in`, `call_next`, `start_service`, `finish_service`, `mark_no_show`, `readd`, `cancel_entry`, `set_break`
+  - **Owner (need the owner PIN):** `owner_update_settings`, `owner_set_online`, `owner_save_service`, `owner_save_barber`, `owner_set_duty`, `owner_change_pin`, `owner_stats`
+  - **Demo helpers (owner PIN):**
+    - `owner_demo_fill` adds 6 sample customers to an empty queue.
+    - `owner_reset_today` clears today's queue and restarts tokens at S-1.
+- When a rule is broken, the function fails with a short code that the app turns into friendly text. The codes are `invalid_pin`, `invalid_phone`, `invalid_name`, `services_1_to_3`, `service_unavailable`, `barber_unavailable`, `online_closed`, `not_open_yet`, `no_barbers`, `salon_closed`, `barber_busy`, `barber_on_break`, `bad_transition`, `no_show_too_early`, `cannot_cancel`, `cannot_rate`, `cannot_readd`, `finish_current_first` and `barber_has_customers`.
 - PINs are stored hashed, never in the frontend code.
 
 **Where the rules live (one place each)**

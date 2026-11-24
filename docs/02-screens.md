@@ -125,7 +125,7 @@ Try every moment in the interactive prototype: https://claude.ai/artifact/JsYXBP
 | 2 | Home | Count changes (realtime) | The number rolls up or down like an odometer | 380 ms |
 | 3 | Join | Tap a service | The tile squashes and springs back (0.94 → 1.03 → 1), the check badge pops, the count badge bumps, minutes and price count to the new totals; 10 ms vibration | `spring-pop` |
 | 4 | Join | Tap a 4th service | The tile shakes sideways, the hint turns orchid ("Up to 3 services"); 30 ms vibration | 400 ms |
-| 5 | Join | Pick a barber | The aubergine thumb slides to the chosen chip; the expected wait fades to its new value | `spring-soft` |
+| 5 | Join | Pick a barber | The selection ring slides to the chosen barber card, the avatar pops, and "Your turn in about … min" rolls to the new value | `spring-soft` |
 | 6 | Join | Confirm | The arrow bubble becomes a spinner, then a ✓ | About 1 s |
 | 7 | **You're in!** | After Confirm | A plum screen: the check circle pops and its tick draws itself; blob confetti bursts from it; the token rolls through numbers like a ticket counter and lands on **S-14**; [See my spot ›] | `celebrate` |
 | 8 | My Status | Place changes | The place, minutes and "call you around" time roll; the ring eases to its new value; a soft shine sweeps across the token card | `slow` |
@@ -162,7 +162,7 @@ These work on phones that support them and are never required.
   - While a barber is busy, a thin ring around the avatar shows how much of the current service is done.
 - **Journey tracker on My Status.** Five dots, Joined · Coming · Your turn · In chair · Done, with the current one glowing orchid. Like a delivery tracker, it shows where you are at a glance.
 - **"You're in!" celebration** between Confirm and My Status (moment 7).
-- **"We'll call you around 2:25 PM"** on My Status: now + the estimated wait, from the same rule as the ring.
+- **"Your turn in about 15 min · around 2:25 PM"** on Join and My Status: now + the estimated wait, from the same rule as the ring.
 
 ---
 
@@ -199,10 +199,19 @@ These work on phones that support them and are never required.
    - A 2-column grid of white tiles, one per active service: a small blob icon, the name, and `30 min · ₹150`.
    - Selected tiles get a 2 px aubergine ring and a round check badge.
    - Tapping a 4th service shakes the tile gently and shows "Up to 3 services".
-4. **Barber:** a wrap of pill chips, like time slots.
-   - **★ Any barber · ~50 min** comes first and is preselected (aubergine fill).
-   - Then one chip per barber on duty, with the wait if you pick them (`Ravi · ~65 min`). A barber on break is dimmed and shows "On break" but can still be picked.
-5. **Sticky footer:** "2 services · 45 min · expected wait about 50 min", then the pill button **[ Confirm · ₹230 › ]**.
+4. **Barber:** a row of equal cards: 4 across on a phone, scrolling sideways if there are more barbers. Each card shows:
+   - an avatar: ★ on aubergine for **Any**, or the barber's signature shape with their initial
+   - the name ("Any", "Ravi")
+   - the wait if you pick them (`~50 min`), or "On break" (the card is dimmed but can still be picked)
+
+   **Any** comes first and is preselected. The selected card gets a 2 px aubergine ring and an `accent-tint` fill, and this highlight slides from card to card.
+5. **Your-turn strip** (just above the button):
+   - a clock icon
+   - "Your turn in about **50 min**", which rolls to the new number when the barber changes
+   - "around 3:00 PM · 2 services · 45 min" underneath (now + the wait)
+
+   If the chosen barber is on break, it says "Ravi is on break" and "No estimate until Ravi is back".
+6. **Sticky footer:** the your-turn strip, then the pill button **[ Confirm · ₹230 › ]**.
    - The footer updates live as services and barber change.
    - Confirm is disabled until the form is valid.
 
@@ -232,7 +241,7 @@ These work on phones that support them and are never required.
    - a small "TOKEN" label
    - **S-14** very large in white
    - "Haircut + Beard trim · Any barber"
-5. **Wait card** (white), with "We'll call you around **2:25 PM**" (now + the wait) under it:
+5. **Wait card** (white), with "Your turn in about **15 min** · around **2:25 PM**" (now + the wait) under it:
    - **Left:** the **place**, "**2nd** in line · 1 ahead · joined 2:05 PM". The number rolls when it changes.
    - **Right:** the **wait ring**, an orchid circular countdown with "**15** min" in the centre. It counts down by itself and eases to new values.
 6. **Install hint card** (once, dismissible): "Add to Home Screen to check your place faster."
