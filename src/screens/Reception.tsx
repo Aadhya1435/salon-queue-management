@@ -44,7 +44,9 @@ function Dashboard() {
 
   const [walkInOpen, setWalkInOpen] = useState(false)
   const [cancelTarget, setCancelTarget] = useState<StaffQueueEntry | null>(null)
-  const [busy, setBusy] = useState<{ key: string; action: BarberAction | 'cancel' | 'readd' } | null>(null)
+  // One entry per running action (stylist id or queue entry id → action), so two stylists'
+  // actions can run at once and finishing one doesn't re-enable the other's buttons early.
+  const [busy, setBusy] = useState<Record<string, BarberAction | 'cancel' | 'readd'>>({})
   const [toast, setToast] = useState<{ id: number; text: string } | null>(null)
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
@@ -68,7 +70,7 @@ function Dashboard() {
   /** Runs one staff call, then refetches whatever happened. */
   const run = useCallback(
     async (key: string, action: BarberAction | 'cancel' | 'readd', call: () => Promise<string | void>) => {
-      setBusy({ key, action })
+      setBusy((b) => ({ ...b, [key]: action }))
       try {
         const note = await call()
         if (note) showToast(note)
@@ -77,7 +79,11 @@ function Dashboard() {
         showToast(friendlyError(e))
       } finally {
         await refetch()
-        setBusy(null)
+        setBusy((b) => {
+          const next = { ...b }
+          delete next[key]
+          return next
+        })
         void refreshQueue()
       }
     },
@@ -140,7 +146,7 @@ function Dashboard() {
         <div className="flex min-w-0 basis-full items-center gap-3 sm:basis-0 sm:flex-1">
           <BackButton to="/staff" label="Staff" tone="dark" />
           <span aria-hidden="true" className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-body font-extrabold text-primary">
-            {(settings?.salon_name ?? 'W').charAt(0)}
+            {(settings?.salon_name ?? 'Roselle').charAt(0)}
           </span>
           <div className="min-w-0">
             <h1 className="truncate text-body font-bold">{settings?.salon_name ?? 'Roselle'} · Reception</h1>
@@ -177,9 +183,22 @@ function Dashboard() {
       </header>
 
       {(loadError || live.status === 'error') && (
-        <p role="alert" className="rounded-tile bg-warning-tint px-4 py-3 text-small font-semibold text-warning">
-          {loadError ?? live.error} Showing the last known queue.
-        </p>
+        <div role="alert" className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-tile bg-warning-tint px-4 py-2 text-small font-semibold text-warning">
+          <span>
+            {rows === null ? "Can't load the queue." : "Can't refresh the queue: showing the last update."}{' '}
+            <span className="font-medium">{loadError ?? live.error}</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              void refetch()
+              void refreshQueue()
+            }}
+            className="min-h-11 underline underline-offset-2"
+          >
+            Try again
+          </button>
+        </div>
       )}
 
       <LayoutGroup>
@@ -201,7 +220,7 @@ function Dashboard() {
                   barber={b}
                   rows={active}
                   now={now}
-                  busy={busy?.key === b.id ? (busy.action as BarberAction) : null}
+                  busy={(busy[b.id] as BarberAction | undefined) ?? null}
                   onAction={(action, entry) => onBarberAction(b, action, entry)}
                 />
               ))}
@@ -217,7 +236,7 @@ function Dashboard() {
         )}
       </LayoutGroup>
 
-      {ready && <NoShows rows={all} busyId={busy?.action === 'readd' ? busy.key : null} onReadd={onReadd} />}
+      {ready && <NoShows rows={all} busyId={Object.keys(busy).find((k) => busy[k] === 'readd') ?? null} onReadd={onReadd} />}
 
       {/* ── Cancel confirm ── */}
       <Sheet

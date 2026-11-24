@@ -56,8 +56,8 @@ Friendly and modern ("Plum & Orchid"), mobile-first:
 Details are in [02-screens.md → Design system](02-screens.md).
 
 ## Demo data
-- **Salon:** Roselle · open 10:00 AM – 9:00 PM (India time) · online joining closes 8:30 PM
-  - The hosted demo uses these same hours. Online joining works 10:00 AM – 8:30 PM IST; reception can add walk-ins until 9:00 PM.
+- **Salon:** Roselle · open 10:00 AM – 11:00 PM (India time) · online joining closes 10:30 PM
+  - The hosted demo uses these same hours. Online joining works 10:00 AM – 10:30 PM IST; reception can add walk-ins until 11:00 PM.
 - **Stylists:** Neha, Ayesha, Simran. Roselle is a salon for women, so the app says "stylist" where the guide says "barber". The database and code keep the word `barber` (e.g. `barbers` table, `/barber/:name` still works next to `/stylist/:name`).
 - **Services (a salon for women):** Haircut & blow-dry 45 min ₹600 · Blow-dry & styling 30 min ₹400 · Hair spa 45 min ₹900 · Global hair colour 90 min ₹2,500 · Highlights 120 min ₹3,500 · Facial 60 min ₹1,200 · Eyebrow threading 10 min ₹60 · Waxing (full arms) 20 min ₹400 · Manicure 30 min ₹500 · Pedicure 40 min ₹700
 - **Test PINs:** Staff **1234** (reception and stylists) · Owner **9999** (everything)

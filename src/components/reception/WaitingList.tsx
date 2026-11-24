@@ -47,7 +47,7 @@ export default function WaitingList({ waiting, barbers, forecast, now, onCancel 
         </div>
 
         {waiting.length === 0 && (
-          <p className="rounded-card bg-surface p-6 text-center text-small text-muted shadow-card md:rounded-none md:shadow-none">No one waiting — walk right in!</p>
+          <p className="rounded-card bg-surface p-6 text-center text-small text-muted shadow-card md:rounded-none md:shadow-none">No one waiting right now.</p>
         )}
 
         <ul className="flex flex-col gap-2.5 md:gap-0">

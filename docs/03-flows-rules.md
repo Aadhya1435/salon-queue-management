@@ -40,8 +40,8 @@ Free → **Call next** (stylist or reception) → customer **Called** → custom
 - **Reception:** taps **Cancel** on a waiting row and confirms. The customer's phone shows "Your spot was cancelled by the salon."
 
 ### Flow F — Opening and closing
-- The owner sets opening hours (e.g. 10:00 AM – 9:00 PM) and can switch the online queue **Open/Closed** at any time.
-- Online joining closes **automatically 30 min before closing** (8:30 PM). Reception can still add walk-ins until closing.
+- The owner sets opening hours (e.g. 10:00 AM – 11:00 PM) and can switch the online queue **Open/Closed** at any time.
+- Online joining closes **automatically 30 min before closing** (10:30 PM). Reception can still add walk-ins until closing.
 - Customers already in the queue keep their spot when joining closes.
 
 ### Flow G — Owner's day
@@ -128,6 +128,7 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
 - Never "0 min" while someone is ahead of you
 - Recalculated on every change **and every 30 seconds**, so it counts down by itself
 - The TV's "Up next" shows a clock time (now + wait), e.g. "~2:25 PM"
+- "Now" is the **server's** time, not the phone's: the app reads the clock from the database server once and corrects for a phone set a few minutes wrong. Open/closed, waits and "around 3:00 PM" all use it.
 
 **Banners on My Status**
 - Place 2: "Start coming to the salon"
@@ -150,7 +151,7 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
 - **Stylist:** "Any stylist" (the default) or one stylist on duty today. A stylist on break can still be chosen but shows "On break".
 - **One active spot per phone.** If this phone already has a Waiting, Called or In-chair spot today, no new spot is created. The app shows "You're already in the queue as S-14" with [View my spot]. The same check applies to walk-ins at reception.
 - **Online joining is open only when** the owner's switch is Open, AND the time is between opening and 30 min before closing, AND at least one stylist is on duty, AND at least one service is On. Otherwise the Join button is disabled and shows the reason:
-  - "Online queue is closed right now. Walk-ins welcome until 9:00 PM."
+  - "Online queue is closed right now. Walk-ins welcome until 11:00 PM."
   - "We open at 10:00 AM."
   - "No stylists available right now."
   - "No services are available online right now."

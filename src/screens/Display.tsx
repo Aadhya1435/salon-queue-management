@@ -94,6 +94,11 @@ export default function Display() {
       .slice(0, 5)
   }, [barbers, entries, minuteNow])
   const waitingCount = entries.filter((e) => e.status === 'waiting').length
+  // Customers waiting for a stylist on break have no time yet, so they aren't in Up next.
+  const onBreakCount = useMemo(() => {
+    const forecast = forecastQueue(barbers, entries, minuteNow)
+    return entries.filter((e) => e.status === 'waiting' && forecast.byEntry.get(e.id)?.wait === null).length
+  }, [barbers, entries, minuteNow])
 
   // Always the public Join page, whichever address the TV has open.
   const joinUrl = JOIN_URL
@@ -160,6 +165,9 @@ export default function Display() {
                   ))}
                 </AnimatePresence>
               </ol>
+              {onBreakCount > 0 && (
+                <p className="num mt-[1vh] text-[2.4vh] text-tv-muted">+{onBreakCount} waiting for a stylist on break</p>
+              )}
               <div className="mt-[2vh] flex items-center gap-[1.4vw]">
                 <div className="shrink-0 rounded-[2vh] bg-white p-[1.2vh]">
                   <QRCodeSVG value={joinUrl} className="size-[15vh]" marginSize={0} />
@@ -195,7 +203,7 @@ export default function Display() {
               transition={spring.pop}
               className="num rounded-full bg-tv-accent px-[3vw] py-[1.6vh] text-[6.5vh] leading-none font-extrabold text-tv-on-accent shadow-pop"
             >
-              {formatToken(latest.token)} → {latest.barberName}
+              {latest.barberName ? `${formatToken(latest.token)} → ${latest.barberName}` : `${formatToken(latest.token)} called`}
             </motion.p>
           )}
         </AnimatePresence>

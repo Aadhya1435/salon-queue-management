@@ -1,8 +1,8 @@
 -- Demo hours and PIN lock for the hosted demo (docs/01-brief.md → Demo data,
 -- docs/03-flows-rules.md §9).
 --
--- 1. Opening hours go back to the lab guide's 10:00 AM – 9:00 PM (India time).
---    Online joining then closes at 8:30 PM; walk-ins are allowed until 9:00 PM.
+-- 1. Demo opening hours: 10:00 AM – 11:00 PM (India time), as set on the hosted demo.
+--    Online joining then closes at 10:30 PM; walk-ins are allowed until 11:00 PM.
 -- 2. settings.pin_change_locked: when true, owner_change_pin refuses every change,
 --    so the test PINs published in the README (1234 / 9999) always work.
 --
@@ -12,7 +12,7 @@ alter table public.settings
   add column if not exists pin_change_locked boolean not null default false;
 
 update public.settings
-   set open_time = '10:00', close_time = '21:00', pin_change_locked = true, updated_at = now()
+   set open_time = '10:00', close_time = '23:00', pin_change_locked = true, updated_at = now()
  where id = 1;
 
 -- Same as before, plus the lock check (after the PIN check, so a wrong PIN still says invalid_pin).

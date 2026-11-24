@@ -1,9 +1,12 @@
 # Roselle — Salon Queue Management System
 
 **Live demo:** https://roselle-salon.vercel.app
+
 **Test PINs:** Staff `1234` (reception & stylist screens) · Owner `9999` (owner settings, opens everything)
+
 **Hosted on:** Vercel (frontend) + Supabase (database & realtime)
-**Demo hours:** 10:00 AM – 9:00 PM India time (IST). Online joining is open until 8:30 PM; reception can add walk-ins until 9:00 PM.
+
+**Demo hours:** 10:00 AM – 11:00 PM India time (IST). Online joining is open until 10:30 PM; reception can add walk-ins until 11:00 PM.
 
 ## About
 A mobile-first web app (installable PWA) for a salon queue:

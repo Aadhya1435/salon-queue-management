@@ -9,8 +9,8 @@ import PillButton from '../components/PillButton'
 import Sheet from '../components/Sheet'
 import YoureIn from '../components/YoureIn'
 import { joinQueue } from '../lib/api'
-import { friendlyError } from '../lib/errors'
-import { formatRupees, formatToken } from '../lib/format'
+import { errorCode, friendlyError } from '../lib/errors'
+import { formatRupees, formatTimeOfDay, formatToken } from '../lib/format'
 import { cleanName, MAX_SERVICES, nameError, phoneError, toggleService } from '../lib/joinForm'
 import { refreshQueue, useLiveQueue } from '../lib/liveQueue'
 import { currentSpot, loadMySpot, saveMySpot } from '../lib/mySpot'
@@ -90,13 +90,21 @@ export default function Join() {
     setSelected(result.selected)
   }
 
+  // The phone number whose last Confirm got no answer (e.g. the connection dropped).
+  // The spot may have been created anyway, so the retry finds it as "existing".
+  const unconfirmedPhone = useRef<string | null>(null)
+
   async function onConfirm() {
     if (!canConfirm) return
     setSubmit('loading')
     setError(null)
     try {
       const result = await joinQueue({ name: cleanName(name), phone, serviceIds: chosen, barberId: effectiveBarberId })
-      if (result.existing) {
+      const retryAfterDrop = unconfirmedPhone.current === phone
+      unconfirmedPhone.current = null
+      // A real duplicate shows "You're already in the queue". After a dropped connection the
+      // existing spot is the one this Confirm just made, so it finishes as a normal join.
+      if (result.existing && !retryAfterDrop) {
         setSubmit('idle')
         setExisting(result)
         return
@@ -107,7 +115,14 @@ export default function Join() {
       setTimeout(() => setJoined(result), 380)
     } catch (e) {
       setSubmit('idle')
-      setError(friendlyError(e))
+      const code = errorCode(e)
+      if (!code) {
+        // No answer from the database: the spot may exist already.
+        unconfirmedPhone.current = phone
+        setError("Couldn't confirm. Check your connection and tap Confirm again.")
+      } else if (code === 'online_closed' && settings) {
+        setError(`Online queue just closed. Walk-ins welcome until ${formatTimeOfDay(settings.close_time)}.`)
+      } else setError(friendlyError(e))
       animate('#join-error', shake, { duration: 0.4 })
       void refreshQueue()
     }

@@ -59,7 +59,7 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
    - Secondary: a white pill with dark text.
    - On dark panels: a white pill.
 2. **Round icon button:** a 44–48 px white circle (back, search, ⋯).
-3. **Identity row:** an avatar or logo plus two lines ("Roselle" / "Open · until 9 PM"). On dark panels it has no background.
+3. **Identity row:** an avatar or logo plus two lines ("Roselle" / "Open · until 11 PM"). On dark panels it has no background.
 4. **Summary pill:** a full-width dark pill with one key fact and "View ›" (Home's "My spot").
 5. **Gradient feature card:** `hero → hero-2` with white text and an avatar overlapping its top edge (the token card, the stylist's current customer).
 6. **Chips:** mauve pills. Selected = aubergine fill with white text (stylist picker, filters).
@@ -171,13 +171,13 @@ These work on phones that support them and are never required.
 
 **Phone layout, top to bottom**
 1. **Hero panel** (dark plum `hero` gradient, bottom corners rounded 32, white text). Keep it calm: three groups (who we are, how busy it is, join) with generous space between them.
-   - **Identity row:** logo circle "R", "Roselle", and `● Open · until 9 PM` (or `● Closed · opens 10 AM`) underneath. There's no pill background and no extra buttons; Find my spot is the link below the stylists.
+   - **Identity row:** logo circle "R", "Roselle", and `● Open · until 11 PM` (or `● Closed · opens 10 AM`) underneath. There's no pill background and no extra buttons; Find my spot is the link below the stylists.
    - **Corner art:** a small blob cluster (3–4 shapes) tucked into the top-right corner and cropped by the panel edge. It never gets a row of its own.
    - "**6** waiting" (big number), "about **50 min** if you join now", and a small `● Live` dot (grey when offline).
    - Empty state: "No one waiting — walk right in!"
    - **[ Join the queue › ]**, a white pill button with an arrow bubble.
      - If the device already has an active spot, it becomes a **summary pill**, "S-14 · 4th · about 30 min   View ›", which opens My Status.
-     - If joining is closed, the pill is disabled and the reason shows under it, e.g. "Online queue is closed. Walk-ins welcome until 9:00 PM."
+     - If joining is closed, the pill is disabled and the reason shows under it, e.g. "Online queue is closed. Walk-ins welcome until 11:00 PM."
 2. **Stylists today** with a count badge. One white card per stylist on duty, each with:
    - the stylist's signature avatar (their shape and initial), with a thin ring while busy that shows how much of the current service is done
    - the name
@@ -221,9 +221,11 @@ These work on phones that support them and are never required.
   - Creates the spot and shows the **"You're in!"** celebration: a plum screen with a check, blob confetti, and the token rolling to S-14 (Motion moment 7).
   - Then opens My Status. [See my spot ›] skips ahead.
   - If the phone already has a spot, a dialog says "You're already in the queue as S-14" with [View my spot].
-  - If joining closed meanwhile, it shows "Online queue just closed. Walk-ins welcome until 9:00 PM."
+  - If joining closed meanwhile, it shows "Online queue just closed. Walk-ins welcome until 11:00 PM."
 - **Stylist went off duty:** if the stylist you picked goes off duty while you fill in the form, a note above Confirm says "Neha isn't available any more, so you'll join with Any stylist."
 - **No services on:** if the owner has switched every service off, online joining is closed with "No services are available online right now."
+
+**Network drops while joining:** if Confirm fails with no answer (for example the connection drops), the spot may still have been created. The app says "Couldn't confirm. Check your connection and tap Confirm again." Tapping Confirm again with the same phone number finishes normally ("You're in!") instead of showing "You're already in the queue".
 
 **Can't load (error state):** if the salon's data can't be loaded (offline, or the server is down), a card replaces the service tiles: "Can't reach the salon right now." with the reason and **[Try again]**. The stylist row is hidden, and the footer says "Reconnect to join the queue" under a disabled Confirm.
 
@@ -274,7 +276,7 @@ These work on phones that support them and are never required.
 **Tablet layout (1024×768 landscape)**
 1. **Top bar:**
    - Salon name, `● Live`, clock
-   - Online-queue pill (`Online: open until 8:30 PM` / `Online: closed`)
+   - Online-queue pill (`Online: open until 10:30 PM` / `Online: closed`)
    - **[ + Add walk-in ]** (primary)
    - [Lock]
 2. **Stylist cards:** a row of up to 3–4 equal columns. Each card has:
@@ -297,7 +299,9 @@ These work on phones that support them and are never required.
 
    Rows waiting **over 60 min** get the warning tint, a clock icon and "62 min". The tint fades in once and never blinks.
 
-   Empty state: "No one waiting — walk right in!"
+   Empty state (staff wording): "No one waiting right now."
+
+   **Can't load:** a warning line at the top says "Can't load the queue." (nothing loaded yet) or "Can't refresh the queue: showing the last update." (an earlier copy is on screen), with the reason and **[Try again]**.
 4. **No-shows today (n):** a collapsible list under the table. Each row shows token, name and called time, with **[Re-add]** (new token, end of queue).
 
 **Add walk-in (side sheet from the right)**
@@ -345,14 +349,14 @@ These work on phones that support them and are never required.
    - One row per stylist on duty: avatar, name, then **NOW S-12** in the accent colour (at least 180 px tall).
    - A stylist who isn't busy shows "Free". A stylist on break shows "On break" in muted text.
 3. **Right (≈ 35%):**
-   - **Up next:** 5 tokens (at least 96 px) with first name and estimated time "~2:25 PM".
+   - **Up next:** 5 tokens (at least 96 px) with first name and estimated time "~2:25 PM". Customers waiting for a stylist on break have no time yet, so they aren't listed; a line under the list says "+2 waiting for a stylist on break", so the count in the header still adds up.
    - At the bottom, a **QR code** "Scan to join · skip the wait", plus the short URL as text.
-4. **Footer line:** "Online queue open until 8:30 PM", or "Walk-ins only right now".
+4. **Footer line:** "Online queue open until 10:30 PM", or "Walk-ins only right now".
 
 **When a token is called:**
 - That stylist's row turns accent-filled and **flashes 3 times** (about 3 s).
 - A soft **chime** plays.
-- A banner "**S-14 → Ayesha**" shows across the top for 5 s.
+- A banner "**S-14 → Ayesha**" shows across the top for 5 s ("**S-14 called**" if the stylist's name isn't known yet).
 - Only the changed row animates.
 
 **Empty / closed:**
@@ -371,7 +375,7 @@ These work on phones that support them and are never required.
 
 **Layout:** a segmented control **Today | Settings**. On desktop the two sections sit side by side.
 
-**Top (always visible):** the **Queue switch** card, a big Open/Closed toggle with a status line: "Online joining is open until 8:30 PM" or "Online joining is closed — walk-ins only".
+**Top (always visible):** the **Queue switch** card, a big Open/Closed toggle with a status line: "Online joining is open until 10:30 PM" or "Online joining is closed — walk-ins only".
 
 **Today**
 - **Stat cards** (2×2 on phone, 6 across on desktop):
@@ -440,3 +444,4 @@ A [Print] button is hidden in print.
 | `/admin` | Owner Settings & Stats | Owner PIN | Phone / laptop |
 | `/poster` | QR Poster | Owner PIN | Print |
 | `/staff` | Staff hub | Public (links go behind PIN) | Any |
+| anything else | Not found: "This page doesn't exist", [Go to Home] and [Join the queue] | Public | Any |

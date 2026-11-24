@@ -1,16 +1,17 @@
 // Salon time helpers. The salon runs on India time wherever the phone is.
 import { formatClock, SALON_TIME_ZONE } from './format'
+import { serverNow } from './serverClock'
 
 const dayFormat = new Intl.DateTimeFormat('en-CA', { timeZone: SALON_TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit' })
 const hourMinuteFormat = new Intl.DateTimeFormat('en-GB', { timeZone: SALON_TIME_ZONE, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
 
 /** Today's date in India, "YYYY-MM-DD" (matches queue_entries.day). */
-export function salonDay(date: Date = new Date()): string {
+export function salonDay(date: Date = new Date(serverNow())): string {
   return dayFormat.format(date)
 }
 
 /** Minutes since midnight in India. */
-export function salonMinutes(date: Date = new Date()): number {
+export function salonMinutes(date: Date = new Date(serverNow())): number {
   const [h, m] = hourMinuteFormat.format(date).split(':').map(Number)
   return h * 60 + m
 }

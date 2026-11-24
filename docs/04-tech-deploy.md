@@ -29,7 +29,7 @@ Use the latest stable version of each package at setup time.
 
 The base is one file: `supabase/migrations/20261124120000_salon_queue.sql`. It was tested in Postgres with 46 rule checks covering security, joining, Call next preferences, no-shows, breaks, duty, stats and the demo helpers. Later files in the same folder change it step by step:
 - `20261124160000_womens_salon_demo_fill.sql`: the demo queue uses the salon's own services and stylists.
-- `20261124180000_demo_hours_pin_lock.sql`: demo hours 10:00 AM – 9:00 PM, and PIN changes locked on the hosted demo.
+- `20261124180000_demo_hours_pin_lock.sql`: demo hours 10:00 AM – 11:00 PM, and PIN changes locked on the hosted demo.
 - `20261124190000_input_and_stylist_fixes.sql`: phone numbers with a leading 0, names need 2 letters (and skip titles on public screens), stylist addresses that survive a rename, Staff and Owner PINs must differ, and online joining needs at least one service On.
 
 **Public tables** (anyone can read, nobody can write directly)

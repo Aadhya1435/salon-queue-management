@@ -9,6 +9,7 @@ import type { RealtimeChannel } from '@supabase/supabase-js'
 import { useSyncExternalStore } from 'react'
 import { friendlyError } from './errors'
 import { isSupabaseConfigured, supabase } from './supabase'
+import { syncServerClock } from './serverClock'
 import { salonDay } from './time'
 import type { Barber, QueueEntry, Service, Settings } from './types'
 
@@ -112,6 +113,7 @@ function start() {
   clearTimeout(stopTimer)
   if (channel) return
   refreshQueue()
+  void syncServerClock()
   channel = supabase.channel('roselle-live')
   for (const table of ['queue_entries', 'barbers', 'services', 'settings']) {
     channel.on('postgres_changes', { event: '*', schema: 'public', table }, scheduleRefresh)
