@@ -14,6 +14,7 @@ Everything here is **free** and needs no credit card.
 | QR codes | `qrcode.react` | TV "Scan to join", the printable poster, and walk-in status links. |
 | Charts | `recharts` | The owner's 3 small charts. |
 | Icons | `lucide-react` | Thin, consistent icon set. |
+| Animation | **Motion** (`motion`, Motion for React) + the browser's View Transitions API | Springs, shared-layout moves (the Call-next row flying into the barber card), enter/exit and number rolls. It respects reduced motion. Blob confetti is built with it, so no extra library is needed. |
 | Tests | **Vitest** for the queue rules, **Playwright** for the checklist across phone, tablet and TV windows | The guide asks the agent to verify against the checklist. |
 
 Use the latest stable version of each package at setup time.
@@ -34,7 +35,7 @@ Use the latest stable version of each package at setup time.
 - `customer_contacts`: phone numbers, kept apart so the public can never read them
 
 **Security**
-- The browser uses Supabase's public anon key. Row-level security lets the public **read only** non-private data: settings without PINs, barbers, services, and queue entries without phones.
+- The browser uses Supabase's public **publishable key** (called the anon key in older projects). Row-level security lets the public **read only** non-private data: settings without PINs, barbers, services, and queue entries without phones.
 - **No table is written directly from the browser.** Every change goes through a database function:
   - Public: `join_queue`, `find_my_spot`, `cancel_my_spot`, `rate_visit`
   - Staff (need the PIN): `call_next`, `start_service`, `finish_service`, `mark_no_show`, `readd`, `cancel_entry`, `add_walk_in`, `set_break`
@@ -68,9 +69,9 @@ salon-queue/
 │   ├── components/      ← shared UI: Button, Card, Chip, WaitRing, Sheet, StatCard, …
 │   ├── lib/queue/       ← estimate rules + tests (the ONE place for wait/place logic)
 │   ├── lib/             ← supabase client, API calls, realtime hooks, time helpers
-│   └── styles/theme.css ← design tokens
+│   └── styles/          ← theme.css (colour, type, shape tokens) + motion.ts (durations, easings, springs)
 ├── vercel.json          ← SPA rewrites (no 404 on refresh)
-└── .env.example         ← VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
+└── .env.example         ← VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY
 ```
 
 ## 4. Deployment (free)
@@ -79,12 +80,12 @@ salon-queue/
 |---|---|---|
 | Frontend (PWA) | **Vercel Hobby** | Auto-deploys on every push to `main`; preview link for every branch; HTTPS included (needed for PWA install). |
 | Database + realtime | **Supabase Free** | 500 MB database and realtime included. Choose the **Mumbai (ap-south-1)** region. The project **pauses after 7 days with no activity**, so open the app before the demo (or add the keep-alive below). |
-| Code | **GitHub** (public repo `salon-queue`) | Vercel deploys from it. The first commit contains only the docs. |
+| Code | **GitHub** (public repo `Aadhya1435/salon-queue-management`) | Vercel deploys from it. The first commit contains only the docs. |
 
 **Steps**
-1. **GitHub:** create the `salon-queue` repo and push. The first commit is docs only (guide checklist).
-2. **Supabase:** create a free project (Mumbai) and run the files in `supabase/migrations/` in order, either in the SQL editor or with `npx supabase db push`. Then copy the **Project URL** and **anon key** from Project Settings → API.
-3. **Vercel:** go to Import Project and pick the GitHub repo. Vercel auto-detects Vite (build `npm run build`, output `dist`). Add the env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then deploy.
+1. **GitHub:** push to `github.com/Aadhya1435/salon-queue-management`. The first commit is docs only (guide checklist).
+2. **Supabase:** create a free project (Mumbai) and run the files in `supabase/migrations/` in order, either in the SQL editor or with `npx supabase db push`. Then copy the **Project URL** and the **publishable key** from Project Settings → API Keys. Older projects call the publishable key the *anon key*.
+3. **Vercel:** go to Import Project and pick the GitHub repo. Vercel auto-detects Vite (build `npm run build`, output `dist`). Add the env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`, then deploy.
 4. **Deep links:** `vercel.json` rewrites every route to `index.html`, so refreshing `/status/…` or `/reception` never shows a 404.
 5. **README:** put the live link right under the title, then the test PINs:
    ```
@@ -97,7 +98,7 @@ salon-queue/
 6. **Deploy early:** right after Step 2 of the build plan. Every push then redeploys automatically.
 7. **Optional keep-alive:** a free GitHub Actions cron that pings the Supabase REST endpoint once a day stops the free project from pausing before grading.
 
-**Never commit** `.env.local` or the Supabase `service_role` key. The anon key is public by design; security comes from row-level security and the PIN checks in the database functions.
+**Never commit** `.env.local` or the Supabase **secret key** (`service_role`). The publishable key is public by design; security comes from row-level security and the PIN checks in the database functions.
 
 ## 5. Build plan (from the guide, adapted)
 Run the app and commit after every step.

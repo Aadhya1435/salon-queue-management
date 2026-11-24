@@ -38,7 +38,7 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
 | `danger` | `#B3261E` | Errors, destructive confirm |
 | `break` | `#8B8291` | On break |
 | Blob colours | orchid `#E7A4EE → #B65CC4` · plum `#8C5E92` · mint `#55AC8D` · sky `#6189CF` · white | Decoration only |
-| Barber colours | Ravi `#A64DB5` · Amit `#2F8A6B` · Imran `#4A72BC` · then `#8C5E92` | Avatars, reception lane stripe |
+| Barber colour + shape | Ravi `#A64DB5` star · Amit `#2F8A6B` clover · Imran `#4A72BC` circle · then `#8C5E92` pill | Signature avatar (shape + initial), Reception lane, TV row |
 | TV board | bg `#2B2030` · surface `#3A2C40` · line `#4A3A51` · text `#F7F1F8` · muted `#B9AEBF` · accent `#E08FE6` · on-accent `#2B2030` | `/display` only (always dark) |
 
 ### Type
@@ -80,12 +80,7 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
   - Orchid appears only on count badges, the "Start coming" highlight, stars, the token pill and the TV's NOW tokens.
 - **Status in words and colour:** ● Free · ● Busy · 12 min left · ● On break · 🕒 62 min.
 - **Quiet destructive actions.** Cancel my spot is a text link that opens a confirmation, never a big red button.
-- **Motion with a purpose:**
-  - The place number rolls when it changes (5th → 4th).
-  - The ring eases to new values.
-  - "It's your turn" pulses slowly.
-  - The TV row flashes 3 times when called.
-  - Everything respects *reduce motion*.
+- **Motion with a purpose:** every animation, its trigger and its timing is listed in [Motion & delight](#motion--delight). Everything respects *reduce motion*.
 
 **Shared pieces:**
 - **Offline banner** at the top: "Offline — reconnecting…".
@@ -97,20 +92,93 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
 
 ---
 
+## Motion & delight
+
+Motion shows what changed and celebrates the moments that matter. It is never decoration for its own sake.
+- Every effect has a *reduce motion* fallback: a plain fade, or no animation.
+- On phones, only three things loop: the blob drift, the live dot, and the "your turn" pulse.
+
+**Tools**
+- **Motion for React** (`motion` package): springs, shared-layout moves and enter/exit.
+- The browser's **View Transitions API** for screen-to-screen changes, where supported.
+- Plain CSS for loops.
+
+Try every moment in the interactive prototype: https://claude.ai/artifact/JsYXBPE7wmQsxNJcaFiREo (section "Plum & Orchid in motion").
+
+### Motion tokens (`src/styles/motion.ts`)
+| Token | Value | Used for |
+|---|---|---|
+| `fast` | 150 ms | Press feedback, chip colour |
+| `base` | 250 ms | Fades, small moves |
+| `slow` | 450 ms | Cards, banners, the ring |
+| `celebrate` | 900 ms | Confetti, the "your turn" reveal |
+| `ease-out` | `cubic-bezier(.2,.8,.2,1)` | Most transitions |
+| `spring-pop` | stiffness 500, damping 22 (a small overshoot) | Taps, badges, check marks |
+| `spring-soft` | stiffness 170, damping 26 | Layout shifts, sliding thumbs |
+
+### Signature moments
+| # | Screen | Trigger | What moves | Timing |
+|---|---|---|---|---|
+| 1 | Home | Load | Hero items fade up in turn; blob shapes pop in, then drift; the waiting count counts up from 0; barber cards rise; a busy barber's ring fills to show how much of the current service is done | Stagger 60–90 ms; drift loop 6–7 s |
+| 2 | Home | Count changes (realtime) | The number rolls up or down like an odometer | 380 ms |
+| 3 | Join | Tap a service | The tile squashes and springs back (0.94 → 1.03 → 1), the check badge pops, the count badge bumps, minutes and price count to the new totals; 10 ms vibration | `spring-pop` |
+| 4 | Join | Tap a 4th service | The tile shakes sideways, the hint turns orchid ("Up to 3 services"); 30 ms vibration | 400 ms |
+| 5 | Join | Pick a barber | The aubergine thumb slides to the chosen chip; the expected wait fades to its new value | `spring-soft` |
+| 6 | Join | Confirm | The arrow bubble becomes a spinner, then a ✓ | About 1 s |
+| 7 | **You're in!** | After Confirm | A plum screen: the check circle pops and its tick draws itself; blob confetti bursts from it; the token rolls through numbers like a ticket counter and lands on **S-14**; [See my spot ›] | `celebrate` |
+| 8 | My Status | Place changes | The place, minutes and "call you around" time roll; the ring eases to its new value; a soft shine sweeps across the token card | `slow` |
+| 9 | My Status | Reaches 2nd | The banner opens (its height animates, so nothing jumps) with a spring; the journey moves to "Coming"; 30 ms vibration | `slow` |
+| 10 | My Status | Reaches 1st | The banner text cross-fades to "You're next!" and the banner glows twice | 2 × 800 ms |
+| 11 | It's your turn | Waiting → Called | A plum circle grows out of the token card to fill the screen; blob shapes burst in; "It's your turn!" rises word by word; the avatar pulses; vibration 200-100-200 and a chime | 750 ms reveal; pulse loop 2.4 s |
+| 12 | Done | Load, or tap a star | Stars pop in one by one. Tapping fills them in order with a pop and a small confetti burst, then "Thanks!" fades in | Stagger 70 ms |
+| 13 | Any screen | Route change | Slide 36 px plus fade, in the direction of the flow (forward from the right, back from the left) | 360 ms |
+| 14 | Reception | Call next | The called row lifts out of the table and flies into the barber card (shared layout); the rows below close the gap | `spring-soft` |
+| 15 | Reception | New walk-in or online join | The row slides in at the end and flashes `accent-tint` once | 600 ms |
+| 16 | Reception | A wait passes 60 min | The row fades to the warning tint once (no blinking) | 600 ms |
+| 17 | Barber View | Start / Done | The big button squashes on press; its label morphs Start → Done; the timer digits roll; Done fires a small confetti burst | `spring-pop` |
+| 18 | Barber View | On break | The screen dims and blurs slightly, and the "On break" card rises | `slow` |
+| 19 | TV | Token called | Accent floods the barber's row from the left; the row glows 3 times; the token pops (1.15 → 1); a "S-14 → Amit" banner drops in for 4 s; chime | About 3 s, then still |
+| 20 | TV | Up next changes | The called token slides out to the left; the rest glide up (FLIP); the new last token fades in | 450 ms |
+| 21 | TV | Idle or empty | The blob cluster orbits slowly around the QR code | 20 s loop |
+| 22 | Admin | Load | Stat numbers count up; chart bars grow from zero in sequence; the line draws itself | 600 ms, stagger 40 ms |
+| 23 | Everywhere | Loading or live | A skeleton shimmer in `surface-2`; the `● Live` dot breathes | 1.4 s loop |
+
+### Haptics and sound
+These work on phones that support them and are never required.
+- **Vibration:**
+  - 10 ms when a primary button is tapped
+  - 30 ms for "Start coming" and for a refused tap
+  - 200-100-200 for "It's your turn"
+- **Chime:**
+  - The TV plays it on every call.
+  - The phone plays it on "It's your turn", but only if the page has already been tapped once (a browser rule).
+
+### Engaging touches
+- **Barber signature shapes.** Each barber owns a blob shape and a colour: Ravi is an orchid star, Amit a mint clover, Imran a sky circle, and the next barber a plum pill.
+  - The avatar is that shape with the barber's initial.
+  - The same shape marks the barber's Reception lane and TV row.
+  - While a barber is busy, a thin ring around the avatar shows how much of the current service is done.
+- **Journey tracker on My Status.** Five dots, Joined · Coming · Your turn · In chair · Done, with the current one glowing orchid. Like a delivery tracker, it shows where you are at a glance.
+- **"You're in!" celebration** between Confirm and My Status (moment 7).
+- **Greeting on Home** by time of day: "Good morning", "Good afternoon" or "Good evening".
+- **"We'll call you around 2:25 PM"** on My Status: now + the estimated wait, from the same rule as the ring.
+
+---
+
 ## Screen 1: Home (`/`)
 **Who / why:** a customer, on their phone, checks how busy the salon is and joins.
 
 **Phone layout, top to bottom**
 1. **Hero panel** (dark plum `hero` gradient, bottom corners rounded 32, white text):
    - **Identity pill:** logo circle "K", "Kesh Studio", and `● Open · until 9 PM` (or `● Closed · opens 10 AM`). A round white **search** button on the right opens Find my spot.
-   - **Blob cluster** band (decoration).
+   - A **greeting** by time of day ("Good afternoon") and the **blob cluster** band (decoration).
    - "**6** waiting" (big number), "about **50 min** if you join now", and a small `● Live` dot (grey when offline).
    - Empty state: "No one waiting — walk right in!"
    - **[ Join the queue › ]**, a white pill button with an arrow bubble.
      - If the device already has an active spot, it becomes a **summary pill**, "S-14 · 4th · about 30 min   View ›", which opens My Status.
      - If joining is closed, the pill is disabled and the reason shows under it, e.g. "Online queue is closed. Walk-ins welcome until 9:00 PM."
 2. **Barbers today** with a count badge. One white card per barber on duty, each with:
-   - a coloured avatar in the barber's colour
+   - the barber's signature avatar (their shape and initial), with a thin ring while busy that shows how much of the current service is done
    - the name
    - a status chip: `Free` (mint), `Busy · 12 min` (mauve) or `On break` (grey)
 3. **"Already in the queue? Find my spot"** opens a sheet. Enter a phone number and tap [Find]: the app opens that spot's status, or says "No active spot for this number today."
@@ -139,7 +207,8 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
 
 **Buttons**
 - **Confirm:**
-  - Creates the spot and opens My Status.
+  - Creates the spot and shows the **"You're in!"** celebration: a plum screen with a check, blob confetti, and the token rolling to S-14 (Motion moment 7).
+  - Then opens My Status. [See my spot ›] skips ahead.
   - If the phone already has a spot, a dialog says "You're already in the queue as S-14" with [View my spot].
   - If joining closed meanwhile, it shows "Online queue just closed. Walk-ins welcome until 9:00 PM."
 
@@ -151,21 +220,22 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
 **Who / why:** a customer watches their place from anywhere and gets called. `:id` is the private random id of the spot, not the token.
 
 **Waiting (phone)**
-1. **Header:** "Your spot" + `● Live`.
-2. **Banner** (when it applies, see rules §4):
+1. **Header:** a round back button, "Your spot", and `● Live`.
+2. **Journey tracker:** 5 dots (Joined · Coming · Your turn · In chair · Done) on a thin track. Finished steps are aubergine; the current one glows orchid.
+3. **Banner** (when it applies, see rules §4). It opens smoothly instead of pushing the page down.
    - "Start coming to the salon" (2nd)
    - "You're next! Please be at the salon" (1st)
    - "Ravi is on break…"
-3. **Token card** (gradient feature card):
+4. **Token card** (gradient feature card):
    - the chosen barber's avatar (or ★ for Any) overlapping the top edge
    - a small "TOKEN" label
    - **S-14** very large in white
    - "Haircut + Beard trim · Any barber"
-4. **Wait card** (white):
+5. **Wait card** (white), with "We'll call you around **2:25 PM**" (now + the wait) under it:
    - **Left:** the **place**, "**2nd** in line · 1 ahead · joined 2:05 PM". The number rolls when it changes.
    - **Right:** the **wait ring**, an orchid circular countdown with "**15** min" in the centre. It counts down by itself and eases to new values.
-5. **Install hint card** (once, dismissible): "Add to Home Screen to check your place faster."
-6. **Cancel my spot**, a quiet link. It opens a confirmation, "Cancel your spot S-14? You'll lose your place.", with [Keep my spot] and [Cancel spot].
+6. **Install hint card** (once, dismissible): "Add to Home Screen to check your place faster."
+7. **Cancel my spot**, a quiet link. It opens a confirmation, "Cancel your spot S-14? You'll lose your place.", with [Keep my spot] and [Cancel spot].
 
 **Other states**
 | State | Screen |
@@ -230,7 +300,7 @@ Every screen: its URL, who uses it, what's on it from top to bottom, what each b
 **Who / why:** a barber sees who's in the chair and who's next, with busy hands. `/barber` (no name) shows a list of barbers to pick from.
 
 **Phone layout**
-1. **Top bar:** avatar + "Ravi" + status chip, and a **Break / Available** switch. [Lock] is in the ⋯ menu.
+1. **Top bar:** signature avatar + "Ravi" + status chip, and a **Break / Available** switch. [Lock] is in the ⋯ menu.
 2. **Hero card** (a gradient feature card with the customer's token large), which depends on state:
    - **Free, someone waiting:** "You're free" and a giant **[ Call next ]**
    - **Free, nobody waiting for you:** "No one waiting for you" (button disabled)

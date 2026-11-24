@@ -12,13 +12,14 @@ Mobile-first PWA for a salon queue. Customers join from their phone, see their p
 ## Stack
 React + TypeScript + Vite + Tailwind CSS v4 + vite-plugin-pwa. Data and live sync come from Supabase (Postgres + Realtime + database functions). Hosting is Vercel (frontend) + Supabase free tier; there is no other backend.
 - `npm install` · `npm run dev` · `npm test` · `npm run build`
-- Env: copy `.env.example` to `.env.local` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)
+- Env: copy `.env.example` to `.env.local` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`)
 - `README.md` must start with the title, then `**Live demo:** <url>`, then the test PINs.
 
 ## How to work
 - One screen or one feature per task. Don't touch other screens.
 - Mobile-first: build at 390 px wide first. Then do tablet (1024×768) and TV (1920×1080) where `02-screens.md` says so.
 - Use only the design tokens in `src/styles/theme.css`. No raw hex colours in components.
+- Animations follow `docs/02-screens.md → Motion & delight`, using the tokens in `src/styles/motion.ts`. Every animation needs a reduced-motion fallback.
 - Queue rules live in ONE place each:
   - Status changes are SQL functions in `supabase/migrations/`.
   - Place and wait estimates are in `src/lib/queue/`.
