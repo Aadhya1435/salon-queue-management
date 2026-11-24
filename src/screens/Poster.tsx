@@ -49,9 +49,10 @@ function PosterPage() {
         </button>
       </div>
 
-      {/* The sheet: A4 ratio on screen, exactly one A4 page in print. */}
-      <article className="relative flex aspect-[210/297] w-full max-w-[210mm] flex-col overflow-hidden rounded-card bg-surface shadow-pop print:h-[297mm] print:w-[210mm] print:max-w-none print:rounded-none print:shadow-none [print-color-adjust:exact]">
-        <header className="relative overflow-hidden bg-linear-to-br from-hero to-hero-2 px-[7%] pt-[7%] pb-[6%] text-white">
+      {/* The sheet: A4 ratio on screen (it grows taller rather than clipping when
+          the headline wraps on narrow screens), exactly one A4 page in print. */}
+      <article className="relative flex aspect-[210/297] w-full max-w-[210mm] flex-col rounded-card bg-surface shadow-pop print:h-[297mm] print:w-[210mm] print:max-w-none print:overflow-hidden print:rounded-none print:shadow-none [print-color-adjust:exact]">
+        <header className="relative overflow-hidden rounded-t-card bg-linear-to-br from-hero to-hero-2 px-[7%] pt-[7%] pb-[6%] text-white print:rounded-none">
           <BlobCluster className="pointer-events-none absolute top-[12%] right-[5%] w-[24%]" />
           <p className="flex items-center gap-[0.6em] text-[clamp(14px,3.2vw,22px)] font-bold print:text-[22px]">
             <span aria-hidden="true" className="grid size-[2em] place-items-center rounded-full bg-white font-extrabold text-primary">
@@ -64,7 +65,7 @@ function PosterPage() {
           </h1>
         </header>
 
-        <div className="flex flex-1 flex-col items-center justify-center gap-[4%] px-[7%] py-[5%]">
+        <div className="flex flex-1 flex-col items-center justify-center-safe gap-[4%] px-[7%] py-[5%]">
           <div className="w-[52%] rounded-[8%] bg-white p-[4%] shadow-card ring-1 ring-border print:shadow-none">
             <QRCodeSVG value={joinUrl} size={512} level="M" marginSize={0} className="block h-auto w-full" title={`QR code for ${shownUrl}`} />
           </div>
