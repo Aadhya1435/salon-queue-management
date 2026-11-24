@@ -60,5 +60,5 @@ Details are in [02-screens.md → Design system](02-screens.md).
   - The hosted demo starts with hours of 12:00 AM – 11:59 PM, so the TA can test it at any time.
   - To show the closing rules, switch to 10:00 AM – 9:00 PM in Owner settings.
 - **Barbers:** Ravi, Amit, Imran
-- **Services:** Haircut 30 min ₹150 · Beard trim 15 min ₹80 · Shave 20 min ₹100 · Kids cut 20 min ₹120 · Head massage 15 min ₹120 · Hair spa 45 min ₹400 · Facial 40 min ₹350 · Hair colour 60 min ₹600
+- **Services (a salon for women):** Haircut & blow-dry 45 min ₹600 · Blow-dry & styling 30 min ₹400 · Hair spa 45 min ₹900 · Global hair colour 90 min ₹2,500 · Highlights 120 min ₹3,500 · Facial 60 min ₹1,200 · Eyebrow threading 10 min ₹60 · Waxing (full arms) 20 min ₹400 · Manicure 30 min ₹500 · Pedicure 40 min ₹700
 - **Test PINs:** Staff **1234** (reception and barbers) · Owner **9999** (everything)

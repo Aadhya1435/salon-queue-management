@@ -240,7 +240,7 @@ These work on phones that support them and are never required.
    - the chosen barber's avatar (or ★ for Any) overlapping the top edge
    - a small "TOKEN" label
    - **S-14** very large in white
-   - "Haircut + Beard trim · Any barber"
+   - "Haircut & blow-dry + Eyebrow threading · Any barber"
 5. **Wait card** (white), with "Your turn in about **15 min** · around **2:25 PM**" (now + the wait) under it:
    - **Left:** the **place**, "**2nd** in line · 1 ahead · joined 2:05 PM". The number rolls when it changes.
    - **Right:** the **wait ring**, an orchid circular countdown with "**15** min" in the centre. It counts down by itself and eases to new values.

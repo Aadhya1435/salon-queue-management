@@ -610,9 +610,9 @@ end $$;
 create function public.owner_demo_fill(p_pin text) returns int
 language plpgsql security definer set search_path = '' as $$
 declare
-  v_names text[] := array['Kunal Shah', 'Priya Patel', 'Rohan Mehta', 'Meera Joshi', 'Arjun Desai', 'Zoya Khan'];
+  v_names text[] := array['Priya Patel', 'Meera Joshi', 'Ananya Rao', 'Zoya Khan', 'Kavya Iyer', 'Riya Shah'];
   v_mins  int[]  := array[70, 52, 38, 25, 12, 4];
-  v_svc   text[][] := array[['Haircut', 'Beard trim'], ['Hair spa', ''], ['Haircut', ''], ['Facial', ''], ['Shave', 'Head massage'], ['Kids cut', '']];
+  v_svc   text[][] := array[['Haircut & blow-dry', 'Eyebrow threading'], ['Hair spa', ''], ['Blow-dry & styling', ''], ['Facial', 'Eyebrow threading'], ['Manicure', 'Pedicure'], ['Waxing (full arms)', '']];
   v_pref  text[] := array['', 'ravi', '', 'amit', 'ravi', ''];
   i int; v_ids uuid[]; v_barber uuid; r json;
 begin
@@ -677,11 +677,13 @@ insert into public.barbers (name, slug, color, shape, sort) values
   ('Imran', 'imran', '#4A72BC', 'circle', 3);
 
 insert into public.services (name, minutes, price, sort) values
-  ('Haircut',      30, 150, 1),
-  ('Beard trim',   15,  80, 2),
-  ('Shave',        20, 100, 3),
-  ('Kids cut',     20, 120, 4),
-  ('Head massage', 15, 120, 5),
-  ('Hair spa',     45, 400, 6),
-  ('Facial',       40, 350, 7),
-  ('Hair colour',  60, 600, 8);
+  ('Haircut & blow-dry',  45,  600,  1),
+  ('Blow-dry & styling',  30,  400,  2),
+  ('Hair spa',            45,  900,  3),
+  ('Global hair colour',  90, 2500,  4),
+  ('Highlights',         120, 3500,  5),
+  ('Facial',              60, 1200,  6),
+  ('Eyebrow threading',   10,   60,  7),
+  ('Waxing (full arms)',  20,  400,  8),
+  ('Manicure',            30,  500,  9),
+  ('Pedicure',            40,  700, 10);

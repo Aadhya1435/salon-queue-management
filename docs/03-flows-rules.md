@@ -114,11 +114,11 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
 
 | Token | Wants | Service | Barber free-in times before this customer | Goes to | Wait | Place |
 |---|---|---|---|---|---|---|
-| S-11 | Any | Haircut 30 | Ravi 10 · Amit 0 | Amit | 0 min → "Any moment now" | 1st |
-| S-12 | Ravi | Beard trim 15 | Ravi 10 | Ravi | 10 min | 2nd |
-| S-13 | Any | Haircut + Beard 45 | Ravi 25 · Amit 30 | Ravi | 25 min | 3rd |
-| S-14 | Any | Haircut 30 | Ravi 70 · Amit 30 | Amit | 30 min | 4th |
-| S-15 | Imran | Shave 20 | Imran on break | — | "Imran is on break" | 1st for Imran |
+| S-11 | Any | Blow-dry & styling 30 | Ravi 10 · Amit 0 | Amit | 0 min → "Any moment now" | 1st |
+| S-12 | Ravi | 15-min service | Ravi 10 | Ravi | 10 min | 2nd |
+| S-13 | Any | Haircut & blow-dry 45 | Ravi 25 · Amit 30 | Ravi | 25 min | 3rd |
+| S-14 | Any | Manicure 30 | Ravi 70 · Amit 30 | Amit | 30 min | 4th |
+| S-15 | Imran | Waxing (full arms) 20 | Imran on break | — | "Imran is on break" | 1st for Imran |
 
 **How the wait is shown**
 - 0 min and 1st in line: "Any moment now"
@@ -206,7 +206,7 @@ It lives in **one function** (`src/lib/queue/`) and has unit tests.
 Run on the live site with three windows: phone (390 px), tablet (1024×768) and TV (1920×1080).
 
 **Join and status**
-- [ ] 1. Join with 2 services → correct total time and price (Haircut + Beard trim = 45 min · ₹230)
+- [ ] 1. Join with 2 services → correct total time and price (Haircut & blow-dry + Eyebrow threading = 55 min · ₹660)
 - [ ] 2. Tap a 4th service → blocked, with "Up to 3 services"
 - [ ] 3. Phone with 9 digits, or starting with 1–5 → error, can't confirm
 - [ ] 4. Same phone joins twice → shown the existing spot, no duplicate
