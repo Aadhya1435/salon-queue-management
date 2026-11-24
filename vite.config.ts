@@ -12,9 +12,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Waitly',
-        short_name: 'Waitly',
-        description: 'Waitly: join the salon queue from your phone and watch your turn come up live.',
+        name: 'Roselle',
+        short_name: 'Roselle',
+        description: 'Roselle: join the salon queue from your phone and watch your turn come up live.',
         theme_color: '#4A374F',
         background_color: '#F3EFF4',
         display: 'standalone',

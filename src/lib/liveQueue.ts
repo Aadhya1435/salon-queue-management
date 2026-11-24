@@ -112,7 +112,7 @@ function start() {
   clearTimeout(stopTimer)
   if (channel) return
   refreshQueue()
-  channel = supabase.channel('waitly-live')
+  channel = supabase.channel('roselle-live')
   for (const table of ['queue_entries', 'barbers', 'services', 'settings']) {
     channel.on('postgres_changes', { event: '*', schema: 'public', table }, scheduleRefresh)
   }

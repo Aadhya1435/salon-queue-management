@@ -1,4 +1,4 @@
-# Waitly — Project Brief & Scope
+# Roselle — Project Brief & Scope
 
 > One page: the *why* and the boundaries. If a feature isn't under **Must-have**, don't build it. If it's under **Don't build**, never build it.
 

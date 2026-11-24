@@ -1,4 +1,4 @@
-# Waitly — Screens & Features
+# Roselle — Screens & Features
 
 Every screen: its URL, who uses it, what's on it from top to bottom, what each button does, and how it looks on phone, tablet and TV. Rules referred to here (place, wait, Call next, statuses) are defined in [03-flows-rules.md](03-flows-rules.md). Don't re-invent them in a screen.
 

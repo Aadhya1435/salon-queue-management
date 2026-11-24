@@ -8,8 +8,8 @@ import { errorCode } from './errors'
 import { supabase } from './supabase'
 import type { StaffRole } from './types'
 
-const KEY = 'waitly:staff'
-const LOCK_KEY = 'waitly:pin-lock'
+const KEY = 'roselle:staff'
+const LOCK_KEY = 'roselle:pin-lock'
 
 export type StaffSession = { pin: string; role: StaffRole }
 

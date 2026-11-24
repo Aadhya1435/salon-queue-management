@@ -1,6 +1,6 @@
-# AGENTS.md — Waitly (Salon Queue Management)
+# AGENTS.md — Roselle (Salon Queue Management)
 
-**Waitly** is a mobile-first PWA for a salon queue (the demo salon is Kesh Studio). Customers join from their phone, see their place and wait, and get called. Reception and barbers run the queue, a TV shows who's next, and the owner sees today's stats.
+**Roselle** is a mobile-first PWA for a salon queue (the demo salon is Kesh Studio). Customers join from their phone, see their place and wait, and get called. Reception and barbers run the queue, a TV shows who's next, and the owner sees today's stats.
 
 ## Read first
 - `docs/01-brief.md` → features and what NOT to build

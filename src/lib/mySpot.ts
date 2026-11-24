@@ -1,7 +1,7 @@
 // This phone remembers its own spot (today only), so reopening the app goes back to it.
 import { salonDay } from './time'
 
-const KEY = 'waitly:my-spot'
+const KEY = 'roselle:my-spot'
 
 export type MySpot = { id: string; token: number; day: string }
 

@@ -1,4 +1,4 @@
-# Waitly — Tech Stack & Deployment
+# Roselle — Tech Stack & Deployment
 
 Everything here is **free** and needs no credit card.
 
@@ -105,7 +105,7 @@ salon-queue/
 4. **Deep links:** `vercel.json` rewrites every route to `index.html`, so refreshing `/status/…` or `/reception` never shows a 404.
 5. **README:** put the live link right under the title, then the test PINs:
    ```
-   # Waitly — Salon Queue Management System
+   # Roselle — Salon Queue Management System
 
    **Live demo:** https://salon-queue-<name>.vercel.app
    **Hosted on:** Vercel (frontend) + Supabase (database & realtime)

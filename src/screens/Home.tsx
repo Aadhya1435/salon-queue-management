@@ -42,10 +42,10 @@ export default function Home() {
   const myEstimate = mySpot ? forecast.byEntry.get(mySpot.id) : undefined
 
   useEffect(() => {
-    document.title = settings ? `${settings.salon_name} · Waitly` : 'Waitly'
+    document.title = settings ? `${settings.salon_name} · Roselle` : 'Roselle'
   }, [settings])
 
-  const salonName = settings?.salon_name ?? 'Waitly'
+  const salonName = settings?.salon_name ?? 'Roselle'
   const ready = live.status === 'ready'
 
   let subLine: React.ReactNode = 'Checking the queue…'
@@ -153,7 +153,7 @@ export default function Home() {
             Staff
           </Link>
           <span className="flex items-center gap-1.5 font-semibold">
-            <img src="/favicon.svg" alt="" className="size-4 rounded" /> Waitly
+            <img src="/favicon.svg" alt="" className="size-4 rounded" /> Roselle
           </span>
         </footer>
       </div>

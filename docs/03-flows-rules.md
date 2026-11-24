@@ -1,4 +1,4 @@
-# Waitly — Flows & Rules
+# Roselle — Flows & Rules
 
 How people move through the app, the queue rules in plain English, and the test checklist.
 **When the code and this doc disagree, this doc wins.** If we change our minds, update this doc first, then the code.
